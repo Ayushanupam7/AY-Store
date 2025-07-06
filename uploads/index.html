@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AY Store - Discover Amazing Apps</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <!-- ✅ Header -->
+    <header class="custom-header">
+        <div class="logo-title">
+            <img src="uploads/icons/logo.png" alt="AY Store Logo" class="logo" />
+            <div class="title-group">
+                <h1 class="logo-text">
+                    AY <span class="animated-store">Store</span>
+                </h1>
+
+                <p class="subtitle typing">Discover Amazing Apps</p>
+
+            </div>
+        </div>
+        <div class="actions">
+            <input type="text" id="searchBar" placeholder="Search apps..." aria-label="Search apps" />
+            <button onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌗</button>
+        </div>
+    </header>
+
+
+
+    <main>
+        <!-- ✅ Banner -->
+        <div class="banner-container banner-slider">
+            <img id="bannerImage" src="" alt="Banner Image" />
+            <div class="banner-text">
+                <h2 id="bannerText"></h2>
+                <p id="bannerDesc"></p>
+                <a id="bannerLink" href="#" target="_blank">Click to visit</a>
+            </div>
+        </div>
+        <div class="dots" id="bannerDots"></div>
+
+
+
+        <!-- ✅ Trending Section -->
+        <section class="trending-section">
+            <h2>🔥 Trending Apps</h2>
+            <div class="trending-wrapper">
+                <div id="trendingGrid" class="trending-grid"></div>
+            </div>
+        </section>
+
+        <!-- ✅ Category & All Apps Section -->
+        <section class="trending-section">
+            <h2>🧩 All Apps</h2>
+
+            <!-- ✅ Category Buttons -->
+            <div class="category">
+                <button onclick="filterApps('All')">All</button>
+                <button onclick="filterApps('Tools')">Tools</button>
+                <button onclick="filterApps('Games')">Games</button>
+                <button onclick="filterApps('Productivity')">Productivity</button>
+            </div>
+
+            <!-- ✅ App Grid -->
+            <div class="app-grid" id="appGrid"></div>
+        </section>
+    </main>
+
+    <!-- ✅ Review Modal -->
+    <div id="reviewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewAppName">
+        <div class="modal-content">
+            <h2 id="reviewAppName">Reviews for App</h2>
+
+            <!-- ⭐ Star Rating -->
+            <div id="reviewRatingStars" class="rating-stars"></div>
+
+            <!-- 💬 Existing Comments -->
+            <div id="commentList"></div>
+
+            <!-- ✍️ Add New Comment -->
+            <textarea id="newComment" placeholder="Write your comment..." aria-label="Write your review"></textarea>
+            <button onclick="submitComment()">Submit</button>
+            <button class="close" onclick="closeReviewModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- ✅ Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>AY Store</h3>
+                <p>Your modern app store for tools, games, and productivity.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#appGrid">Apps</a></li>
+                    <li><a href="#reviewModal">Reviews</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contact Us</h4>
+                <p>Email: <a href="mailto:support@aystore.com">support@aystore.com</a></p>
+                <p>Phone: +91-98765-43210</p>
+                <p>Location: Nagpur, India</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 AY Store. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
