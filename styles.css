@@ -40,7 +40,7 @@ body.dark {
   top: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(90deg, #6200ea, #7c4dff);
+  background: linear-gradient(90deg, #000000f8, #7340fd);
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -228,48 +228,80 @@ body.dark .logo-text {
 .banner-slider {
   width: 100%;
   margin: 1rem auto 0;
+  margin-top: 0px;
   overflow: hidden;
   position: relative;
-  border-radius: 0 0 15px 15px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  
+  border-radius: 0 0 15px 15px; /* Rounded bottom only */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.527);
 }
+
+/* ====== Banner Container ====== */
 .banner-container {
   position: relative;
   margin-top: 88px;
   width: 100%;
   height: 260px;
 }
-.banner-slider img {
+
+/* ====== Banner Image Styling ====== */
+.banner-img {
   width: 100%;
-  max-height: 260px;
+  height: 100%;
   object-fit: cover;
   display: block;
   border-radius: 0 0 15px 15px;
+  transition: filter 0.4s ease, border-radius 0.4s ease;
 }
+
+/* 🎯 Style per-banner image */
+.banner-img.banner-1 {
+  filter: saturate(1.2);
+}
+
+.banner-img.banner-2 {
+  filter: brightness(0.9) contrast(1.2);
+ 
+}
+
+.banner-img.banner-3 {
+  filter: grayscale(0.1) sepia(0.2);
+}
+
+/* ====== Text Box Overlay ====== */
 .banner-text {
   position: absolute;
-  bottom: 20px;
-  left: 30px;
-  background-color: rgba(0, 0, 0, 0.5);
+  bottom: 10px;
+  left: 0px;
+  /* background-color: rgb(192, 181, 181); */
   padding: 1rem 1.5rem;
   border-radius: 12px;
-  color: #fff;
-  max-width: 90%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(6px);
+  color: #ffffff;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 rgb(255, 0, 0),
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  max-width: 70%;
+  /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); */
+  /* backdrop-filter: blur(6px); */
+  z-index: 10;
 }
+
 .banner-text h2 {
   font-size: 1.4rem;
   margin-bottom: 6px;
 }
+
 .banner-text p {
   font-size: 0.95rem;
   margin-bottom: 8px;
   line-height: 1.4;
 }
+
 .banner-text a {
   display: inline-block;
-  background: #03dac5;
+  background: #000000;
   color: black;
   padding: 6px 14px;
   border-radius: 6px;
@@ -277,26 +309,29 @@ body.dark .logo-text {
   font-weight: 500;
   transition: background 0.3s ease;
 }
+
 .banner-text a:hover {
   background: #00b8a9;
   color: white;
 }
 
-/* ====== Dark Mode Banner ====== */
+/* ====== Dark Mode Support ====== */
 body.dark .banner-text {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-body.dark .banner-text a {
-  background: #bb86fc;
-  color: #fff;
-}
-body.dark .banner-text a:hover {
-  background: #9f6eff;
+  /* background-color: rgba(255, 255, 255, 0.1); */
   color: #fff;
 }
 
-/* ====== Banner Dots ====== */
+body.dark .banner-text a {
+  /* background: #bb86fc; */
+  color: #fff;
+}
+
+body.dark .banner-text a:hover {
+  /* background: #9f6eff; */
+  color: #fff;
+}
+
+/* ====== Dots (Navigation) ====== */
 .dots {
   display: flex;
   justify-content: center;
@@ -305,6 +340,7 @@ body.dark .banner-text a:hover {
   margin-top: 10px;
   padding-bottom: 10px;
 }
+
 .dots span {
   width: 10px;
   height: 10px;
@@ -313,77 +349,80 @@ body.dark .banner-text a:hover {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
+
 .dots span.active {
   background: #6200ea;
   transform: scale(1.2);
 }
+
 .dots span:hover {
   background: #3700b3;
 }
 
-/* ====== Banner Responsive Fix ====== */
+/* Optional: Dark mode support */
+body.dark .dots span {
+  background: #888;
+}
+body.dark .dots span.active {
+  background: #fff;
+}
+
+
+/* ====== Responsive Styling ====== */
 @media (max-width: 768px) {
   .banner-container {
     height: 200px;
   }
+
   .banner-text {
     bottom: 16px;
     left: 20px;
     padding: 0.8rem 1.2rem;
   }
+
   .banner-text h2 {
     font-size: 1.2rem;
   }
+
   .banner-text p {
     font-size: 0.9rem;
   }
+
   .banner-text a {
     font-size: 0.85rem;
     padding: 6px 12px;
+  }
+
+  .banner-img.banner-1 {
+    object-position: center top;
+    filter: saturate(1.1) brightness(1.05);
   }
 }
 
 @media (max-width: 480px) {
   .banner-container {
-    height: auto;
+    height: 180px;
     margin-top: 130px;
   }
-  .banner-slider img {
-    height: auto;
-    max-height: 220px;
-    object-fit: cover;
-  }
-  .banner-text {
-    font-size: 0.85rem;
-    padding: 0.6rem 1rem;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-  }
-  .banner-text h2 {
-    font-size: 1.1rem;
-  }
-  .banner-text p {
-    font-size: 0.85rem;
-  }
-  .banner-text a {
-    font-size: 0.75rem;
-    padding: 5px 10px;
-  }
-}
-@media (max-width: 480px) {
-  .banner-text p,
+
   .banner-text,
-  .banner-text a,
-  .banner-link {
+  .banner-text h2,
+  .banner-text p,
+  .banner-text a {
     display: none;
   }
-}
-@media (max-width: 480px) {
-  .banner-container {
-    margin-top: 130px;
+
+  .banner-img.banner-1 {
+    object-position: center ;
+    height: 180px;
+    
+  }
+
+  .dots {
+    margin-bottom: 1rem;
   }
 }
+
 
 /* ====== App Grid ====== */
 .app-grid {
@@ -481,6 +520,20 @@ body.dark .app-details .description {
 .buttons button:hover {
   background: #3700b3;
 }
+.visit-btn {
+  background-color: #03a9f4;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-block;
+  transition: background 0.3s ease;
+}
+.visit-btn:hover {
+  background-color: #0288d1;
+}
+
 
 /* ====== Trending Section (Horizontal Scroll) ====== */
 .trending-section {
@@ -537,8 +590,8 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
 /* Trending App Card */
 .trending-card {
   display: inline-block;
-  width: 280px;
-  min-width: 280px;
+  width: auto;
+  min-width: auto;
   background: #fff;
   border-radius: 12px;
   padding: 1rem;
@@ -774,4 +827,33 @@ footer {
     flex-direction: column;
     text-align: center;
   }
+}
+#likeBtn {
+  background: #4267B2;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  margin: 0 10px;
+}
+
+#likeBtn:hover {
+  background: #365899;
+  transform: scale(1.05);
+}
+
+#likeBtn:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+#likeCount {
+  font-weight: bold;
+  color: #4267B2;
+}
+
+body.dark #likeCount {
+  color: #8b9dc3;
 }

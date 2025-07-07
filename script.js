@@ -12,24 +12,6 @@ const apps = [
     comments: ["Super fast!", "Clean UI."]
   },
   {
-    name: "TrackPro",
-    category: "Productivity",
-    link: "uploads/ChronoTrackPro.exe",
-    icon: "uploads/icons/chrono.png",
-    rating: 1.0,
-    description: "Another time tracker with minimal features.",
-    comments: ["Needs improvement."]
-  },
-  {
-    name: "Pro",
-    category: "Productivity",
-    link: "uploads/ChronoTrackPro.exe",
-    icon: "uploads/icons/chrono.png",
-    rating: 5.0,
-    description: "Top-rated time tracking tool with AI integration.",
-    comments: ["Perfect for my work!"]
-  },
-  {
     name: "Mini Web Portfolio",
     category: "Tools",
     link: "https://ayushanupamportfolio.netlify.app/",
@@ -40,9 +22,13 @@ const apps = [
   }
 ];
 
-
 // 📈 Sort Trending by Rating Descending
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
+
+// ✅ Check if link is downloadable
+function isDownloadable(link) {
+  return link.startsWith("uploads/") || link.endsWith(".exe") || link.endsWith(".zip");
+}
 
 // ==========================
 // 📦 Render App Card Grid
@@ -54,6 +40,12 @@ function renderApps(filteredApps = apps) {
   filteredApps.forEach(app => {
     const card = document.createElement("div");
     card.className = "app-card";
+
+    const isDownload = isDownloadable(app.link);
+    const buttonHTML = isDownload
+      ? `<button onclick="downloadApp('${app.link}')">Download</button>`
+      : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
+
     card.innerHTML = `
       <div class="card-content">
         <div class="star-badge">⭐ ${app.rating}</div>
@@ -63,7 +55,7 @@ function renderApps(filteredApps = apps) {
           <p>${app.category}</p>
           <p class="description">${app.description}</p>
           <div class="buttons">
-            <button onclick="downloadApp('${app.link}')">Download</button>
+            ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
           </div>
         </div>
@@ -84,6 +76,12 @@ function renderTrendingApps() {
   trendingApps.forEach((app, index) => {
     const card = document.createElement("div");
     card.className = "app-card trending-card";
+
+    const isDownload = isDownloadable(app.link);
+    const buttonHTML = isDownload
+      ? `<button onclick="downloadApp('${app.link}')">Download</button>`
+      : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
+
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
       <div class="card-content">
@@ -93,7 +91,7 @@ function renderTrendingApps() {
           <p>${app.category}</p>
           <p class="description">${app.description}</p>
           <div class="buttons">
-            <button onclick="downloadApp('${app.link}')">Download</button>
+            ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
           </div>
         </div>
@@ -203,9 +201,7 @@ function submitComment() {
 const banners = [
   {
     image: "uploads/banners/banner1.jpg",
-    text: "Discover Amazing Tools for Developers",
-    description: "Explore tools that help you code faster and better.",
-    link: "https://yourwebsite.com/developer-tools",
+    link: "https://ayushanupamportfolio.netlify.app/",
     linkText: "Click to visit"
   },
   {
@@ -230,20 +226,27 @@ function showBanner(index) {
   const bannerImage = document.getElementById("bannerImage");
   const bannerText = document.getElementById("bannerText");
   const bannerDesc = document.getElementById("bannerDesc");
-  const bannerLink = document.getElementById("bannerLink");
+  const bannerLink = document.getElementById("bannerLinkWrapper");
   const bannerDots = document.getElementById("bannerDots");
 
-  if (!banners[index]) return;
+  const banner = banners[index];
 
-  bannerImage.src = banners[index].image;
-  bannerText.textContent = banners[index].text || "";
-  bannerDesc.textContent = banners[index].description || "";
-  bannerLink.href = banners[index].link || "#";
-  bannerLink.textContent = banners[index].linkText || "Click to visit";
+  bannerImage.src = banner.image;
+  bannerImage.className = "banner-img";
+  bannerImage.classList.add(`banner-${index + 1}`);
+
+  bannerText.textContent = banner.text || "";
+  bannerDesc.textContent = banner.description || "";
+  bannerLink.href = banner.link || "#";
 
   bannerDots.innerHTML = banners.map((_, i) =>
-    `<span class="${i === index ? 'active' : ''}" onclick="setBanner(${i})"></span>`
+    `<span class="${i === index ? "active" : ""}" onclick="setBanner(${i})"></span>`
   ).join("");
+}
+
+function setBanner(index) {
+  currentBanner = index;
+  showBanner(index);
 }
 
 function nextBanner() {
@@ -251,13 +254,60 @@ function nextBanner() {
   showBanner(currentBanner);
 }
 
-function setBanner(index) {
-  currentBanner = index;
-  showBanner(currentBanner);
+setInterval(nextBanner, 6000);
+
+
+// Likes functionality
+let likesCount = 0;
+const likeBtn = document.getElementById('likeBtn');
+const likeCountEl = document.getElementById('likeCount');
+
+// Fetch current likes
+async function fetchLikes() {
+  try {
+    const response = await fetch('/.netlify/functions/get-likes');
+    if (!response.ok) throw new Error('Failed to fetch likes');
+    const data = await response.json();
+    likesCount = data.likes;
+    likeCountEl.textContent = likesCount;
+  } catch (error) {
+    console.error('Error fetching likes:', error);
+    likeCountEl.textContent = '0 (offline)';
+  }
 }
 
-setInterval(nextBanner, 4000);
+// Update likes
+async function updateLikes() {
+  likeBtn.disabled = true;
+  try {
+    const response = await fetch('/.netlify/functions/update-likes', {
+      method: 'POST'
+    });
+    
+    if (!response.ok) throw new Error('Failed to update likes');
+    
+    const data = await response.json();
+    likesCount = data.likes;
+    likeCountEl.textContent = likesCount;
+    
+    // Show feedback
+    likeBtn.textContent = '👍 Liked!';
+    setTimeout(() => {
+      likeBtn.textContent = '👍 Like this store';
+      likeBtn.disabled = false;
+    }, 2000);
+  } catch (error) {
+    console.error('Error updating likes:', error);
+    likeBtn.disabled = false;
+    likeBtn.textContent = '👍 Try Again';
+  }
+}
 
+// Initialize likes
+fetchLikes();
+
+// Event listener
+likeBtn.addEventListener('click', updateLikes);
 // ===================
 // 🚀 Initialize App
 // ===================

@@ -32,15 +32,26 @@
 
     <main>
         <!-- ✅ Banner -->
-        <div class="banner-container banner-slider">
-            <img id="bannerImage" src="" alt="Banner Image" />
-            <div class="banner-text">
-                <h2 id="bannerText"></h2>
-                <p id="bannerDesc"></p>
-                <a id="bannerLink" href="#" target="_blank">Click to visit</a>
-            </div>
+        <!-- ✅ Banner -->
+        <div class="banner-slider">
+            <!-- Wrap only the banner image and text with a clickable link -->
+            <a id="bannerLinkWrapper" href="#" target="_blank" class="banner-link-wrapper">
+                <div class="banner-container">
+                    <img id="bannerImage" class="banner-img" src="" alt="Banner" />
+                    <div class="banner-text">
+                        <h2 id="bannerText"></h2>
+                        <p id="bannerDesc"></p>
+
+                    </div>
+                </div>
+            </a>
+
+            <!-- Place dots outside the <a> tag, below the banner -->
+
         </div>
         <div class="dots" id="bannerDots"></div>
+
+
 
 
 
@@ -104,14 +115,17 @@
             </div>
             <div class="footer-column">
                 <h4>Contact Us</h4>
-                <p>Email: <a href="mailto:support@aystore.com">support@aystore.com</a></p>
-                <p>Phone: +91-98765-43210</p>
-                <p>Location: Nagpur, India</p>
+                <p>Email: <a href="mailto:ayushanupamofficial7@gmail.com">ayushanupamofficial7@gmail.com</a></p>
+                <p>Phone: +91-6205315629</p>
+                <p>Location: Jalgaon, Maharashtra</p>
             </div>
         </div>
         <div class="footer-bottom">
             <p>&copy; 2025 AY Store. All rights reserved.</p>
+            <button id="likeBtn">👍 Like this store</button>
+            <span id="likeCount">Loading...</span> likes
         </div>
+
     </footer>
 
     <script src="script.js"></script>
