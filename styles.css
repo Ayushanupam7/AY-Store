@@ -230,28 +230,22 @@ body.dark .logo-text {
   margin: 1rem auto 0;
   overflow: hidden;
   position: relative;
-  border-radius: 0 0 15px 15px; /* ⬅️ Only bottom corners rounded */
+  border-radius: 0 0 15px 15px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
-
-/* Banner Container (with fixed height) */
 .banner-container {
   position: relative;
-  margin-top: 88px; /* Header height offset */
+  margin-top: 88px;
   width: 100%;
   height: 260px;
 }
-
-/* Banner Image */
 .banner-slider img {
   width: 100%;
-  height: 100%;
+  max-height: 260px;
   object-fit: cover;
   display: block;
-  border-radius: 0 0 15px 15px; /* ⬅️ Match the container */
+  border-radius: 0 0 15px 15px;
 }
-
-/* Banner Text Block */
 .banner-text {
   position: absolute;
   bottom: 20px;
@@ -264,18 +258,15 @@ body.dark .logo-text {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(6px);
 }
-
 .banner-text h2 {
   font-size: 1.4rem;
   margin-bottom: 6px;
 }
-
 .banner-text p {
   font-size: 0.95rem;
   margin-bottom: 8px;
   line-height: 1.4;
 }
-
 .banner-text a {
   display: inline-block;
   background: #03dac5;
@@ -286,14 +277,12 @@ body.dark .logo-text {
   font-weight: 500;
   transition: background 0.3s ease;
 }
-
 .banner-text a:hover {
   background: #00b8a9;
   color: white;
 }
 
-
-/* Dark Mode Text Contrast */
+/* ====== Dark Mode Banner ====== */
 body.dark .banner-text {
   background-color: rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -307,7 +296,7 @@ body.dark .banner-text a:hover {
   color: #fff;
 }
 
-/* ====== Dots ====== */
+/* ====== Banner Dots ====== */
 .dots {
   display: flex;
   justify-content: center;
@@ -316,7 +305,6 @@ body.dark .banner-text a:hover {
   margin-top: 10px;
   padding-bottom: 10px;
 }
-
 .dots span {
   width: 10px;
   height: 10px;
@@ -325,36 +313,30 @@ body.dark .banner-text a:hover {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
-
 .dots span.active {
   background: #6200ea;
   transform: scale(1.2);
 }
-
 .dots span:hover {
   background: #3700b3;
 }
 
-/* ====== Responsive Adjustments ====== */
+/* ====== Banner Responsive Fix ====== */
 @media (max-width: 768px) {
   .banner-container {
     height: 200px;
   }
-
   .banner-text {
     bottom: 16px;
     left: 20px;
     padding: 0.8rem 1.2rem;
   }
-
   .banner-text h2 {
     font-size: 1.2rem;
   }
-
   .banner-text p {
     font-size: 0.9rem;
   }
-
   .banner-text a {
     font-size: 0.85rem;
     padding: 6px 12px;
@@ -363,26 +345,30 @@ body.dark .banner-text a:hover {
 
 @media (max-width: 480px) {
   .banner-container {
-    height: 180px;
+    height: auto;
+    margin-top: 130px;
   }
-
+  .banner-slider img {
+    height: auto;
+    max-height: 220px;
+    object-fit: cover;
+  }
   .banner-text {
-    left: 15px;
-    right: 15px;
-    padding: 0.8rem 1rem;
-    bottom: 12px;
+    font-size: 0.85rem;
+    padding: 0.6rem 1rem;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
   }
-
   .banner-text h2 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
-
   .banner-text p {
     font-size: 0.85rem;
   }
-
   .banner-text a {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    padding: 5px 10px;
   }
 }
 @media (max-width: 480px) {
