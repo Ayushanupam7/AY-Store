@@ -268,14 +268,20 @@ const banners = [
   {
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
-    text: "Welcome to AY Store",
-    description: "Discover amazing apps for all your needs"
+    
   },
   {
     image: "uploads/banners/banner2.jpg",
     link: "#trendingGrid",
     text: "Trending Apps",
     description: "Check out what's popular this week"
+  },
+  {
+    image: "uploads/banners/banner3.jpg",
+    text: "Download Lightweight Useful Apps",
+    description: "Boost productivity with small but powerful tools.",
+    link: "https://yourwebsite.com/light-apps",
+    linkText: "Click to visit"
   }
 ];
 
