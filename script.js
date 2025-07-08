@@ -258,6 +258,7 @@ setInterval(nextBanner, 6000);
 
 
 // Likes functionality
+// In your script.js
 let likesCount = 0;
 const likeBtn = document.getElementById('likeBtn');
 const likeCountEl = document.getElementById('likeCount');
@@ -266,22 +267,30 @@ const likeCountEl = document.getElementById('likeCount');
 async function fetchLikes() {
   try {
     const response = await fetch('/.netlify/functions/get-likes');
-    if (!response.ok) throw new Error('Failed to fetch likes');
+    if (!response.ok) throw new Error('Network response was not ok');
+    
     const data = await response.json();
-    likesCount = data.likes;
+    likesCount = data.likes || 0;
     likeCountEl.textContent = likesCount;
+    likeBtn.textContent = '👍 Like this store';
   } catch (error) {
     console.error('Error fetching likes:', error);
     likeCountEl.textContent = '0 (offline)';
+    likeBtn.textContent = '👍 Try Again';
   }
 }
 
 // Update likes
 async function updateLikes() {
   likeBtn.disabled = true;
+  likeBtn.textContent = 'Sending...';
+  
   try {
     const response = await fetch('/.netlify/functions/update-likes', {
-      method: 'POST'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
     
     if (!response.ok) throw new Error('Failed to update likes');
@@ -289,25 +298,25 @@ async function updateLikes() {
     const data = await response.json();
     likesCount = data.likes;
     likeCountEl.textContent = likesCount;
-    
-    // Show feedback
     likeBtn.textContent = '👍 Liked!';
+    
+    // Reset button after 2 seconds
     setTimeout(() => {
       likeBtn.textContent = '👍 Like this store';
       likeBtn.disabled = false;
     }, 2000);
   } catch (error) {
     console.error('Error updating likes:', error);
-    likeBtn.disabled = false;
     likeBtn.textContent = '👍 Try Again';
+    likeBtn.disabled = false;
   }
 }
 
-// Initialize likes
-fetchLikes();
-
-// Event listener
-likeBtn.addEventListener('click', updateLikes);
+// Initialize likes when page loads
+document.addEventListener('DOMContentLoaded', () => {
+  fetchLikes();
+  likeBtn.addEventListener('click', updateLikes);
+});
 // ===================
 // 🚀 Initialize App
 // ===================
