@@ -346,40 +346,43 @@ async function fetchLikes() {
   }
 }
 
+// Like Functionality
 async function likeApp(appName) {
   const likeButton = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
-  if (!likeButton) return;
   
-  // Optimistic UI update
-  const currentLikes = parseInt(likeButton.querySelector('.like-count').textContent) || 0;
-  likeButton.querySelector('.like-count').textContent = currentLikes + 1;
-  likeButton.classList.add('liked');
+  // Disable button during request to prevent spamming
   likeButton.disabled = true;
-
+  
   try {
     const response = await fetch('/.netlify/functions/update-likes', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ appName })
     });
+
+    const data = await response.json();
     
-    if (!response.ok) throw new Error('Failed to update likes');
-    
-    const { likes } = await response.json();
-    appLikes[appName] = likes;
-    updateLikeButton(appName, likes);
+    if (data.success) {
+      // Update UI immediately
+      const likeCountElement = likeButton.querySelector('.like-count');
+      const currentCount = parseInt(likeCountElement.textContent);
+      likeCountElement.textContent = currentCount + 1;
+      
+      // Visual feedback
+      likeButton.classList.add('heart-animation');
+      setTimeout(() => {
+        likeButton.classList.remove('heart-animation');
+      }, 1000);
+    }
   } catch (error) {
-    console.error('Error updating likes:', error);
-    // Revert optimistic update
-    likeButton.querySelector('.like-count').textContent = currentLikes;
+    console.error('Like failed:', error);
+    alert('Failed to save your like. Please try again.');
   } finally {
-    setTimeout(() => {
-      likeButton.classList.remove('liked');
-      likeButton.disabled = false;
-    }, 1000);
+    likeButton.disabled = false;
   }
 }
-
 function updateLikeButton(appName, likes) {
   const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
   if (likeElement) {
