@@ -327,13 +327,14 @@ function resetBannerInterval() {
 }
 
 // ===================
-// ❤️ Like Functionality
+// ❤️ Like Functionality (Updated)
 // ===================
 async function fetchLikes() {
   try {
     const response = await fetch('/.netlify/functions/get-likes');
-    if (!response.ok) throw new Error('Failed to fetch likes');
-    
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
     const data = await response.json();
     appLikes = data;
     
@@ -343,46 +344,58 @@ async function fetchLikes() {
     });
   } catch (error) {
     console.error('Error fetching likes:', error);
+    // Fallback to local storage if DB fails
+    const localLikes = localStorage.getItem('appLikes');
+    if (localLikes) {
+      appLikes = JSON.parse(localLikes);
+    }
   }
 }
 
-// Like Functionality
 async function likeApp(appName) {
   const likeButton = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
+  if (!likeButton) return;
   
-  // Disable button during request to prevent spamming
+  // Optimistic UI update
+  const likeCountElement = likeButton.querySelector('.like-count');
+  const currentCount = parseInt(likeCountElement.textContent) || 0;
+  likeCountElement.textContent = currentCount + 1;
+  likeButton.classList.add('heart-animation');
   likeButton.disabled = true;
-  
+
   try {
     const response = await fetch('/.netlify/functions/update-likes', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       },
       body: JSON.stringify({ appName })
     });
 
-    const data = await response.json();
-    
-    if (data.success) {
-      // Update UI immediately
-      const likeCountElement = likeButton.querySelector('.like-count');
-      const currentCount = parseInt(likeCountElement.textContent);
-      likeCountElement.textContent = currentCount + 1;
-      
-      // Visual feedback
-      likeButton.classList.add('heart-animation');
-      setTimeout(() => {
-        likeButton.classList.remove('heart-animation');
-      }, 1000);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to update likes');
     }
+
+    const data = await response.json();
+    appLikes[appName] = data.newCount;
+    
+    // Save to local storage as backup
+    localStorage.setItem('appLikes', JSON.stringify(appLikes));
   } catch (error) {
-    console.error('Like failed:', error);
-    alert('Failed to save your like. Please try again.');
+    console.error('Like error:', error);
+    // Revert optimistic update
+    likeCountElement.textContent = currentCount;
+    alert(error.message || 'Failed to save your like. Please try again.');
   } finally {
-    likeButton.disabled = false;
+    setTimeout(() => {
+      likeButton.classList.remove('heart-animation');
+      likeButton.disabled = false;
+    }, 1000);
   }
 }
+
 function updateLikeButton(appName, likes) {
   const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
   if (likeElement) {
