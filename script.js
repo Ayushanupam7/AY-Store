@@ -25,8 +25,8 @@ const apps = [
 // 📈 Sort Trending by Rating Descending
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
-// Store app likes
-let appLikes = {};
+// Store app likes and initialize with default values
+let appLikes = Object.fromEntries(apps.map(app => [app.name, 0]));
 
 // ✅ Check if link is downloadable
 function isDownloadable(link) {
@@ -54,7 +54,7 @@ function renderApps(filteredApps = apps) {
     card.innerHTML = `
       <div class="card-content">
         <div class="star-badge">⭐ ${app.rating}</div>
-        <img src="${app.icon}" alt="${app.name}" class="app-icon" />
+        <img src="${app.icon}" alt="${app.name}" class="app-icon" loading="lazy" />
         <div class="app-details">
           <h3>${app.name}</h3>
           <p>${app.category}</p>
@@ -95,7 +95,7 @@ function renderTrendingApps() {
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
       <div class="card-content">
-        <img src="${app.icon}" alt="${app.name}" class="app-icon" />
+        <img src="${app.icon}" alt="${app.name}" class="app-icon" loading="lazy" />
         <div class="app-details">
           <h3>${app.name}</h3>
           <p>${app.category}</p>
@@ -141,30 +141,61 @@ function filterApps(category) {
 // ===================
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
+  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
 }
 
 // =====================
 // 🔎 Search Functionality
 // =====================
-document.getElementById("searchBar").addEventListener("input", function () {
+document.getElementById("searchBar").addEventListener("input", debounce(function () {
   const val = this.value.toLowerCase();
-  const filtered = apps.filter(app => app.name.toLowerCase().includes(val));
+  const filtered = apps.filter(app => 
+    app.name.toLowerCase().includes(val) || 
+    app.description.toLowerCase().includes(val)
+  );
   renderApps(filtered);
-});
+}, 300));
+
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    const context = this, args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
 
 // ========================
 // 💬 Review Modal Section
 // ========================
 let currentApp = null;
 
-function openReviewModal(appName) {
+async function openReviewModal(appName) {
   const app = apps.find(a => a.name === appName);
   currentApp = app;
+
+  // Load fresh comments from database
+  try {
+    const response = await fetch(`/.netlify/functions/get-app?name=${encodeURIComponent(appName)}`);
+    if (response.ok) {
+      const data = await response.json();
+      if (data.comments) app.comments = data.comments;
+      if (data.rating) app.rating = data.rating;
+    }
+  } catch (error) {
+    console.error('Error fetching app data:', error);
+  }
 
   document.getElementById("reviewAppName").textContent = `Reviews for ${app.name}`;
   document.getElementById("commentList").innerHTML =
     app.comments.map(c => `<p>💬 ${c}</p>`).join("");
 
+  renderRatingStars(app.rating);
+  document.getElementById("newComment").value = "";
+  document.getElementById("reviewModal").style.display = "flex";
+}
+
+function renderRatingStars(rating) {
   const starsContainer = document.getElementById("reviewRatingStars");
   starsContainer.innerHTML = "";
 
@@ -172,24 +203,30 @@ function openReviewModal(appName) {
     const star = document.createElement("span");
     star.textContent = "★";
     star.classList.add("review-star");
-    if (i <= app.rating) star.classList.add("active");
+    if (i <= rating) star.classList.add("active");
 
     star.addEventListener("click", () => setReviewRating(i));
     starsContainer.appendChild(star);
   }
-
-  document.getElementById("newComment").value = "";
-  document.getElementById("reviewModal").style.display = "flex";
 }
 
-function setReviewRating(rating) {
+async function setReviewRating(rating) {
   if (!currentApp) return;
   currentApp.rating = rating;
 
-  const stars = document.querySelectorAll("#reviewRatingStars .review-star");
-  stars.forEach((star, index) => {
-    star.classList.toggle("active", index < rating);
-  });
+  // Update in database
+  try {
+    await fetch('/.netlify/functions/update-rating', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        appName: currentApp.name,
+        rating 
+      })
+    });
+  } catch (error) {
+    console.error('Error updating rating:', error);
+  }
 
   trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
   renderApps();
@@ -200,10 +237,26 @@ function closeReviewModal() {
   document.getElementById("reviewModal").style.display = "none";
 }
 
-function submitComment() {
+async function submitComment() {
   const comment = document.getElementById("newComment").value.trim();
   if (comment && currentApp) {
     currentApp.comments.push(comment);
+    
+    // Update in database
+    try {
+      await fetch('/.netlify/functions/add-comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          appName: currentApp.name,
+          comment 
+        })
+      });
+    } catch (error) {
+      console.error('Error adding comment:', error);
+    }
+    
+    document.getElementById("newComment").value = "";
     openReviewModal(currentApp.name);
   }
 }
@@ -215,56 +268,56 @@ const banners = [
   {
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
-    linkText: "Click to visit"
+    text: "Welcome to AY Store",
+    description: "Discover amazing apps for all your needs"
   },
   {
     image: "uploads/banners/banner2.jpg",
-    text: "Build Your Next Portfolio Easily",
-    description: "Use templates and apps to design professional portfolios.",
-    link: "https://yourwebsite.com/portfolio-builder",
-    linkText: "Click to visit"
-  },
-  {
-    image: "uploads/banners/banner3.jpg",
-    text: "Download Lightweight Useful Apps",
-    description: "Boost productivity with small but powerful tools.",
-    link: "https://yourwebsite.com/light-apps",
-    linkText: "Click to visit"
+    link: "#trendingGrid",
+    text: "Trending Apps",
+    description: "Check out what's popular this week"
   }
 ];
 
 let currentBanner = 0;
+let bannerInterval;
 
 function showBanner(index) {
-  const bannerImage = document.getElementById("bannerImage");
-  const bannerText = document.getElementById("bannerText");
-  const bannerDesc = document.getElementById("bannerDesc");
-  const bannerLink = document.getElementById("bannerLinkWrapper");
-  const bannerDots = document.getElementById("bannerDots");
-
   const banner = banners[index];
+  const bannerImage = document.getElementById("bannerImage");
+  
+  // Preload next banner image
+  const nextIndex = (index + 1) % banners.length;
+  const nextBanner = banners[nextIndex];
+  const preloadImage = new Image();
+  preloadImage.src = nextBanner.image;
 
   bannerImage.src = banner.image;
-  bannerImage.className = "banner-img";
-  bannerImage.classList.add(`banner-${index + 1}`);
+  bannerImage.alt = banner.text || "Banner";
+  document.getElementById("bannerText").textContent = banner.text || "";
+  document.getElementById("bannerDesc").textContent = banner.description || "";
+  document.getElementById("bannerLinkWrapper").href = banner.link;
 
-  bannerText.textContent = banner.text || "";
-  bannerDesc.textContent = banner.description || "";
-  bannerLink.href = banner.link || "#";
-
-  bannerDots.innerHTML = banners.map((_, i) =>
-    `<span class="${i === index ? "active" : ""}" onclick="setBanner(${i})"></span>`
-  ).join("");
+  // Update dots
+  document.getElementById("bannerDots").innerHTML = banners
+    .map((_, i) => `<span class="${i === index ? 'active' : ''}" onclick="setBanner(${i})"></span>`)
+    .join("");
 }
 
 function setBanner(index) {
   currentBanner = index;
   showBanner(index);
+  resetBannerInterval();
 }
 
 function nextBanner() {
   currentBanner = (currentBanner + 1) % banners.length;
   showBanner(currentBanner);
+}
+
+function resetBannerInterval() {
+  clearInterval(bannerInterval);
+  bannerInterval = setInterval(nextBanner, 5000);
 }
 
 // ===================
@@ -273,17 +326,14 @@ function nextBanner() {
 async function fetchLikes() {
   try {
     const response = await fetch('/.netlify/functions/get-likes');
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error('Failed to fetch likes');
     
     const data = await response.json();
     appLikes = data;
     
     // Update all like buttons
     Object.entries(appLikes).forEach(([appName, likes]) => {
-      const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
-      if (likeElement) {
-        likeElement.querySelector('.like-count').textContent = likes;
-      }
+      updateLikeButton(appName, likes);
     });
   } catch (error) {
     console.error('Error fetching likes:', error);
@@ -291,29 +341,43 @@ async function fetchLikes() {
 }
 
 async function likeApp(appName) {
+  const likeButton = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
+  if (!likeButton) return;
+  
+  // Optimistic UI update
+  const currentLikes = parseInt(likeButton.querySelector('.like-count').textContent) || 0;
+  likeButton.querySelector('.like-count').textContent = currentLikes + 1;
+  likeButton.classList.add('liked');
+  likeButton.disabled = true;
+
   try {
     const response = await fetch('/.netlify/functions/update-likes', {
       method: 'POST',
-      body: JSON.stringify({ appName }),
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ appName })
     });
     
-    if (!response.ok) throw new Error('Network response was not ok');
+    if (!response.ok) throw new Error('Failed to update likes');
     
     const { likes } = await response.json();
     appLikes[appName] = likes;
-    
-    // Update the specific like button
-    const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
-    if (likeElement) {
-      likeElement.querySelector('.like-count').textContent = likes;
-      likeElement.classList.add('liked');
-      setTimeout(() => likeElement.classList.remove('liked'), 1000);
-    }
+    updateLikeButton(appName, likes);
   } catch (error) {
     console.error('Error updating likes:', error);
+    // Revert optimistic update
+    likeButton.querySelector('.like-count').textContent = currentLikes;
+  } finally {
+    setTimeout(() => {
+      likeButton.classList.remove('liked');
+      likeButton.disabled = false;
+    }, 1000);
+  }
+}
+
+function updateLikeButton(appName, likes) {
+  const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
+  if (likeElement) {
+    likeElement.querySelector('.like-count').textContent = likes;
   }
 }
 
@@ -321,9 +385,22 @@ async function likeApp(appName) {
 // 🚀 Initialize App
 // ===================
 document.addEventListener('DOMContentLoaded', () => {
+  // Set dark mode if preferred
+  if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark');
+  }
+
+  // Initial renders
   renderApps();
   renderTrendingApps();
   showBanner(currentBanner);
+  resetBannerInterval();
+
+  // Fetch initial data
   fetchLikes();
-  setInterval(nextBanner, 6000);
+
+  // Pause banner on hover
+  const banner = document.querySelector('.banner-slider');
+  banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
+  banner.addEventListener('mouseleave', resetBannerInterval);
 });
