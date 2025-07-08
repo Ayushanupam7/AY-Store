@@ -25,6 +25,9 @@ const apps = [
 // 📈 Sort Trending by Rating Descending
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
+// Store app likes
+let appLikes = {};
+
 // ✅ Check if link is downloadable
 function isDownloadable(link) {
   return link.startsWith("uploads/") || link.endsWith(".exe") || link.endsWith(".zip");
@@ -46,6 +49,8 @@ function renderApps(filteredApps = apps) {
       ? `<button onclick="downloadApp('${app.link}')">Download</button>`
       : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
 
+    const likeCount = appLikes[app.name] || 0;
+    
     card.innerHTML = `
       <div class="card-content">
         <div class="star-badge">⭐ ${app.rating}</div>
@@ -57,6 +62,9 @@ function renderApps(filteredApps = apps) {
           <div class="buttons">
             ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
+            <button class="like-btn" onclick="likeApp('${app.name}')" id="like-${app.name.replace(/\s+/g, '-')}">
+              ❤️ <span class="like-count">${likeCount}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -82,6 +90,8 @@ function renderTrendingApps() {
       ? `<button onclick="downloadApp('${app.link}')">Download</button>`
       : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
 
+    const likeCount = appLikes[app.name] || 0;
+    
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
       <div class="card-content">
@@ -93,6 +103,9 @@ function renderTrendingApps() {
           <div class="buttons">
             ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
+            <button class="like-btn" onclick="likeApp('${app.name}')" id="like-${app.name.replace(/\s+/g, '-')}">
+              ❤️ <span class="like-count">${likeCount}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -254,72 +267,63 @@ function nextBanner() {
   showBanner(currentBanner);
 }
 
-setInterval(nextBanner, 6000);
-
-
-// Likes functionality
-// In your script.js
-let likesCount = 0;
-const likeBtn = document.getElementById('likeBtn');
-const likeCountEl = document.getElementById('likeCount');
-
-// Fetch current likes
+// ===================
+// ❤️ Like Functionality
+// ===================
 async function fetchLikes() {
   try {
     const response = await fetch('/.netlify/functions/get-likes');
     if (!response.ok) throw new Error('Network response was not ok');
     
     const data = await response.json();
-    likesCount = data.likes || 0;
-    likeCountEl.textContent = likesCount;
-    likeBtn.textContent = '👍 Like this store';
+    appLikes = data;
+    
+    // Update all like buttons
+    Object.entries(appLikes).forEach(([appName, likes]) => {
+      const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
+      if (likeElement) {
+        likeElement.querySelector('.like-count').textContent = likes;
+      }
+    });
   } catch (error) {
     console.error('Error fetching likes:', error);
-    likeCountEl.textContent = '0 (offline)';
-    likeBtn.textContent = '👍 Try Again';
   }
 }
 
-// Update likes
-async function updateLikes() {
-  likeBtn.disabled = true;
-  likeBtn.textContent = 'Sending...';
-  
+async function likeApp(appName) {
   try {
     const response = await fetch('/.netlify/functions/update-likes', {
       method: 'POST',
+      body: JSON.stringify({ appName }),
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
     });
     
-    if (!response.ok) throw new Error('Failed to update likes');
+    if (!response.ok) throw new Error('Network response was not ok');
     
-    const data = await response.json();
-    likesCount = data.likes;
-    likeCountEl.textContent = likesCount;
-    likeBtn.textContent = '👍 Liked!';
+    const { likes } = await response.json();
+    appLikes[appName] = likes;
     
-    // Reset button after 2 seconds
-    setTimeout(() => {
-      likeBtn.textContent = '👍 Like this store';
-      likeBtn.disabled = false;
-    }, 2000);
+    // Update the specific like button
+    const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
+    if (likeElement) {
+      likeElement.querySelector('.like-count').textContent = likes;
+      likeElement.classList.add('liked');
+      setTimeout(() => likeElement.classList.remove('liked'), 1000);
+    }
   } catch (error) {
     console.error('Error updating likes:', error);
-    likeBtn.textContent = '👍 Try Again';
-    likeBtn.disabled = false;
   }
 }
 
-// Initialize likes when page loads
-document.addEventListener('DOMContentLoaded', () => {
-  fetchLikes();
-  likeBtn.addEventListener('click', updateLikes);
-});
 // ===================
 // 🚀 Initialize App
 // ===================
-renderApps();
-renderTrendingApps();
-showBanner(currentBanner);
+document.addEventListener('DOMContentLoaded', () => {
+  renderApps();
+  renderTrendingApps();
+  showBanner(currentBanner);
+  fetchLikes();
+  setInterval(nextBanner, 6000);
+});

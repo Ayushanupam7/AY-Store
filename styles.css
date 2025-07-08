@@ -828,32 +828,30 @@ footer {
     text-align: center;
   }
 }
-#likeBtn {
-  background: #4267B2;
-  color: white;
+.like-btn {
+  background: none;
   border: none;
-  padding: 8px 16px;
-  border-radius: 20px;
   cursor: pointer;
-  transition: background 0.3s, transform 0.2s;
-  margin: 0 10px;
+  font-size: 1rem;
+  padding: 5px 10px;
+  transition: all 0.3s;
 }
 
-#likeBtn:hover {
-  background: #365899;
-  transform: scale(1.05);
+.like-btn:hover {
+  transform: scale(1.1);
 }
 
-#likeBtn:disabled {
-  background: #cccccc;
-  cursor: not-allowed;
+.like-btn.liked {
+  animation: pulse 0.5s;
+  color: #ff4757;
 }
 
-#likeCount {
-  font-weight: bold;
-  color: #4267B2;
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
-body.dark #likeCount {
-  color: #8b9dc3;
+.like-count {
+  margin-left: 5px;
 }
