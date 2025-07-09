@@ -753,6 +753,7 @@ body.dark .app-details-content {
 .app-details-container {
   padding: 1rem;
   max-width: 1200px;
+  padding-bottom: 105px; /* ⬅️ Enough space for fixed footer */
   margin: 0 auto;
 }
 .details-header {
