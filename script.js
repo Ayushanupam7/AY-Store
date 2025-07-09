@@ -208,33 +208,75 @@ function downloadApp(link, appName) {
 }
 
 // ==============================
-// 🔍 SEARCH & FILTERING
+// 🔍 SEARCH & SUGGESTIONS
 // ==============================
+const suggestionBox = document.getElementById("searchSuggestions");
+
+document.getElementById("searchBar").addEventListener("input",
+  debounce(function () {
+    const val = this.value.toLowerCase().trim();
+    const suggestionBox = document.getElementById("searchSuggestions");
+
+    if (!val) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    const filtered = apps.filter(app =>
+      app.name.toLowerCase().includes(val)
+    );
+
+    if (filtered.length === 0) {
+      suggestionBox.style.display = "none";
+      return;
+    }
+
+    suggestionBox.innerHTML = filtered
+      .map(app => `
+        <p onclick="selectSuggestion('${app.name}')">
+          <img src="${app.icon}" alt="${app.name}" class="suggestion-icon" />
+          ${app.name}
+        </p>
+      `)
+      .join("");
+
+    suggestionBox.style.display = "block";
+  }, 200)
+);
+
+function selectSuggestion(appName) {
+  document.getElementById("searchBar").value = appName;
+  document.getElementById("searchSuggestions").style.display = "none";
+  openAppDetailsPage(appName);
+}
 function filterApps(category) {
   if (category === "All") return renderApps();
   const filtered = apps.filter(app => app.category === category);
   renderApps(filtered);
 }
 
-document.getElementById("searchBar").addEventListener("input",
-  debounce(function () {
-    const val = this.value.toLowerCase();
-    const filtered = apps.filter(app =>
-      app.name.toLowerCase().includes(val) ||
-      app.description.toLowerCase().includes(val) ||
-      app.category.toLowerCase().includes(val)
-    );
-    renderApps(filtered);
-  }, 300)
-);
-
 // ==============================
 // 🌙 DARK MODE
 // ==============================
 function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+  const isDark = document.body.classList.toggle("dark");
+  localStorage.setItem('darkMode', isDark);
+
+  const toggleBtn = document.getElementById("darkModeToggle");
+  toggleBtn.textContent = isDark ? "☀️" : "🌙";
 }
+function initializeApp() {
+  const isDark = localStorage.getItem('darkMode') === 'true';
+  if (isDark) {
+    document.body.classList.add('dark');
+    document.getElementById("darkModeToggle").textContent = "☀️";
+  } else {
+    document.getElementById("darkModeToggle").textContent = "🌙";
+  }
+
+  // ... other initializations
+}
+
 
 // ==============================
 // 💬 REVIEW SYSTEM

@@ -1,145 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AY Store - Discover Amazing Apps</title>
-    <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AY Store - Discover Amazing Apps</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <!-- Header -->
-    <header class="custom-header">
-        <div class="logo-title">
-            <img src="uploads/icons/logo.png" alt="AY Store Logo" class="logo" />
-            <div class="title-group">
-                <h1 class="logo-text">AY <span class="animated-store">Store</span></h1>
-                <p class="subtitle typing">Discover Amazing Apps</p>
-            </div>
-        </div>
-        <div class="actions">
-            <input type="text" id="searchBar" placeholder="Search apps..." aria-label="Search apps" />
-            <button onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌗</button>
-        </div>
-    </header>
-
-    <main>
-        <!-- Banner -->
-        <div class="banner-slider">
-            <a id="bannerLinkWrapper" href="#" target="_blank" class="banner-link-wrapper">
-                <div class="banner-container">
-                    <img id="bannerImage" class="banner-img" src="" alt="Banner" />
-                    <div class="banner-text">
-                        <h2 id="bannerText"></h2>
-                        <p id="bannerDesc"></p>
-                    </div>
-                </div>
-            </a>
-        </div>
-        <div class="dots" id="bannerDots"></div>
-
-        <!-- Trending Section -->
-        <section class="trending-section">
-            <h2>🔥 Trending Apps</h2>
-            <div class="trending-wrapper">
-                <div id="trendingGrid" class="trending-grid"></div>
-            </div>
-        </section>
-
-        <!-- All Apps Section -->
-        <section class="trending-section">
-            <h2>🧩 All Apps</h2>
-            <div class="category">
-                <button onclick="filterApps('All')">All</button>
-                <button onclick="filterApps('Tools')">Tools</button>
-                <button onclick="filterApps('Games')">Games</button>
-                <button onclick="filterApps('Productivity')">Productivity</button>
-            </div>
-            <div class="app-grid" id="appGrid"></div>
-        </section>
-    </main>
-
-    <!-- Review Modal -->
-    <div id="reviewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewAppName">
-        <div class="modal-content">
-            <h2 id="reviewAppName">Reviews for App</h2>
-            <div id="reviewRatingStars" class="rating-stars"></div>
-            <div id="commentList"></div>
-            <textarea id="newComment" placeholder="Write your comment..." aria-label="Write your review"></textarea>
-            <button onclick="submitComment()">Submit</button>
-            <button class="close" onclick="closeReviewModal()">Close</button>
-        </div>
+  <!-- Header -->
+  <header class="custom-header">
+    <div class="logo-title">
+      <img src="uploads/icons/logo.png" alt="AY Store Logo" class="logo" />
+      <div class="title-group">
+        <h1 class="logo-text">AY <span class="animated-store">Store</span></h1>
+        <p class="subtitle typing">Discover Amazing Apps</p>
+      </div>
     </div>
+    <div class="actions">
+    <div class="search-wrapper">
+  <input type="text" id="searchBar" placeholder="Search apps..." aria-label="Search apps" />
+  <div id="searchSuggestions" class="suggestion-box"></div>
+</div>
 
-    <!-- App Details Modal -->
-    <div id="appDetailsModal" class="modal" role="dialog" aria-modal="true">
-        <div class="modal-content app-details-content">
-            <button class="close" onclick="closeAppDetailsModal()">×</button>
-            <div class="app-details-header">
-                <img id="detailAppIcon" class="detail-app-icon" src="" alt="App Icon">
-                <div class="app-header-info">
-                    <h2 id="detailAppName"></h2>
-                    <div id="detailAppRating" class="detail-rating"></div>
-                    <div class="app-meta">
-                        <span id="detailAppCategory"></span>
-                        <span id="detailAppSize"></span>
-                        <span id="detailAppVersion"></span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="app-screenshots" id="appScreenshots"></div>
-            
-            <div class="app-details-body">
-                <div class="detail-section">
-                    <h3>Description</h3>
-                    <p id="detailAppDescription"></p>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>Developer</h3>
-                    <p id="detailAppDeveloper"></p>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>Last Updated</h3>
-                    <p id="detailAppUpdated"></p>
-                </div>
-            </div>
-            
-            <div class="app-details-footer">
-                <button id="detailDownloadBtn" class="download-btn">Download</button>
-                <button onclick="openReviewModalFromDetails()" class="review-btn">Write Review</button>
-            </div>
+    <button class="thememode" id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌙</button>
+
+</div>
+
+  </header>
+
+  <main>
+    <!-- Banner -->
+    <div class="banner-slider">
+      <a id="bannerLinkWrapper" href="#" target="_blank" class="banner-link-wrapper">
+        <div class="banner-container">
+          <img id="bannerImage" class="banner-img" src="" alt="Banner" />
+          <div class="banner-text">
+            <h2 id="bannerText"></h2>
+            <p id="bannerDesc"></p>
+          </div>
         </div>
+      </a>
     </div>
+    <div class="dots" id="bannerDots"></div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3>AY Store</h3>
-                <p>Your modern app store for tools, games, and productivity.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#appGrid">Apps</a></li>
-                    <li><a href="#reviewModal">Reviews</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Contact Us</h4>
-                <p>Email: <a href="mailto:ayushanupamofficial7@gmail.com">ayushanupamofficial7@gmail.com</a></p>
-                <p>Phone: +91-6205315629</p>
-                <p>Location: Jalgaon, Maharashtra</p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 AY Store. All rights reserved.</p>
-        </div>
-    </footer>
+    <!-- Trending Section -->
+    <section class="trending-section">
+      <h2>🔥 Trending Apps</h2>
+      <div class="trending-wrapper">
+        <div id="trendingGrid" class="trending-grid"></div>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
+    <!-- All Apps Section -->
+    <section class="trending-section">
+      <h2>🧩 All Apps</h2>
+      <div class="category">
+        <button onclick="filterApps('All')">All</button>
+        <button onclick="filterApps('Tools')">Tools</button>
+        <button onclick="filterApps('Games')">Games</button>
+        <button onclick="filterApps('Productivity')">Productivity</button>
+      </div>
+      <div class="app-grid" id="appGrid"></div>
+    </section>
+  </main>
+
+  <!-- Review Modal -->
+  <div id="reviewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewAppName">
+    <div class="modal-content">
+      <h2 id="reviewAppName">Reviews for App</h2>
+      <div id="reviewRatingStars" class="rating-stars"></div>
+      <div id="commentList"></div>
+      <textarea id="newComment" placeholder="Write your comment..." aria-label="Write your review"></textarea>
+      <button onclick="submitComment()">Submit</button>
+      <button class="close" onclick="closeReviewModal()">Close</button>
+    </div>
+  </div>
+
+  <!-- App Details Modal -->
+  <div id="appDetailsModal" class="modal" role="dialog" aria-modal="true">
+    <div class="modal-content app-details-content">
+      <button class="close" onclick="closeAppDetailsModal()">×</button>
+      <div class="app-details-header">
+        <img id="detailAppIcon" class="detail-app-icon" src="" alt="App Icon">
+        <div class="app-header-info">
+          <h2 id="detailAppName"></h2>
+          <div id="detailAppRating" class="detail-rating"></div>
+          <div class="app-meta">
+            <span id="detailAppCategory"></span>
+            <span id="detailAppSize"></span>
+            <span id="detailAppVersion"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-screenshots" id="appScreenshots"></div>
+
+      <div class="app-details-body">
+        <div class="detail-section">
+          <h3>Description</h3>
+          <p id="detailAppDescription"></p>
+        </div>
+
+        <div class="detail-section">
+          <h3>Developer</h3>
+          <p id="detailAppDeveloper"></p>
+        </div>
+
+        <div class="detail-section">
+          <h3>Last Updated</h3>
+          <p id="detailAppUpdated"></p>
+        </div>
+      </div>
+
+      <div class="app-details-footer">
+        <button id="detailDownloadBtn" class="download-btn">Download</button>
+        <button onclick="openReviewModalFromDetails()" class="review-btn">Write Review</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-column">
+        <h3>AY Store</h3>
+        <p>Your modern app store for tools, games, and productivity.</p>
+      </div>
+      <div class="footer-column">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#appGrid">Apps</a></li>
+          <li><a href="#reviewModal">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contact Us</h4>
+        <p>Email: <a href="mailto:ayushanupamofficial7@gmail.com">ayushanupamofficial7@gmail.com</a></p>
+        <p>Phone: +91-6205315629</p>
+        <p>Location: Jalgaon, Maharashtra</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 AY Store. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
