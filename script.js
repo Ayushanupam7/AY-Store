@@ -401,6 +401,29 @@ function resetBannerInterval() {
   bannerInterval = setInterval(nextBanner, 5000);
 }
 
+function addBannerSwipeSupport() {
+  const banner = document.querySelector(".banner-slider");
+  let startX = 0;
+
+  banner.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  banner.addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+
+    if (Math.abs(diffX) > 50) {
+      if (diffX > 0) {
+        nextBanner();
+      } else {
+        currentBanner = (currentBanner - 1 + banners.length) % banners.length;
+        showBanner(currentBanner);
+      }
+    }
+  });
+}
+
 // ==============================
 // 🚀 INITIALIZATION
 // ==============================

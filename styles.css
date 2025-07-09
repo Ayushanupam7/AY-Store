@@ -270,6 +270,7 @@ body.dark .suggestion-box p:hover {
 .banner-slider {
   width: 100%;
   overflow: hidden;
+  touch-action: pan-y;
   position: relative;
   margin: 0 auto;
   border-radius: 0 0 15px 15px;
