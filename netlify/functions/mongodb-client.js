@@ -5,12 +5,8 @@ let cachedDb = null;
 async function connectToDatabase() {
   if (cachedDb) return cachedDb;
   
-  const client = await MongoClient.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
-  
-  cachedDb = client.db('ay-store');
+  const client = await MongoClient.connect(process.env.MONGODB_URI);
+  cachedDb = client.db(); // Uses the database name from your connection string
   return cachedDb;
 }
 

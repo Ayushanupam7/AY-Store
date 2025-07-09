@@ -25,8 +25,8 @@ const apps = [
 // 📈 Sort Trending by Rating Descending
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
-// Store app likes and initialize with default values
-let appLikes = Object.fromEntries(apps.map(app => [app.name, 0]));
+// Store app likes - will be populated from DB
+let appLikes = {};
 
 // ✅ Check if link is downloadable
 function isDownloadable(link) {
@@ -174,7 +174,6 @@ async function openReviewModal(appName) {
   const app = apps.find(a => a.name === appName);
   currentApp = app;
 
-  // Load fresh comments from database
   try {
     const response = await fetch(`/.netlify/functions/get-app?name=${encodeURIComponent(appName)}`);
     if (response.ok) {
@@ -214,9 +213,8 @@ async function setReviewRating(rating) {
   if (!currentApp) return;
   currentApp.rating = rating;
 
-  // Update in database
   try {
-    await fetch('/.netlify/functions/update-rating', {
+    const response = await fetch('/.netlify/functions/update-rating', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -224,13 +222,18 @@ async function setReviewRating(rating) {
         rating 
       })
     });
+    
+    if (!response.ok) {
+      throw new Error('Failed to update rating');
+    }
+    
+    trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
+    renderApps();
+    renderTrendingApps();
   } catch (error) {
     console.error('Error updating rating:', error);
+    alert('Failed to update rating. Please try again.');
   }
-
-  trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
-  renderApps();
-  renderTrendingApps();
 }
 
 function closeReviewModal() {
@@ -240,11 +243,8 @@ function closeReviewModal() {
 async function submitComment() {
   const comment = document.getElementById("newComment").value.trim();
   if (comment && currentApp) {
-    currentApp.comments.push(comment);
-    
-    // Update in database
     try {
-      await fetch('/.netlify/functions/add-comment', {
+      const response = await fetch('/.netlify/functions/add-comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -252,12 +252,18 @@ async function submitComment() {
           comment 
         })
       });
+      
+      if (!response.ok) {
+        throw new Error('Failed to add comment');
+      }
+      
+      currentApp.comments.push(comment);
+      document.getElementById("newComment").value = "";
+      openReviewModal(currentApp.name);
     } catch (error) {
       console.error('Error adding comment:', error);
+      alert('Failed to add comment. Please try again.');
     }
-    
-    document.getElementById("newComment").value = "";
-    openReviewModal(currentApp.name);
   }
 }
 
@@ -268,20 +274,14 @@ const banners = [
   {
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
-    
+    text: "Welcome to AY Store",
+    description: "Discover amazing apps for all your needs"
   },
   {
     image: "uploads/banners/banner2.jpg",
     link: "#trendingGrid",
     text: "Trending Apps",
     description: "Check out what's popular this week"
-  },
-  {
-    image: "uploads/banners/banner3.jpg",
-    text: "Download Lightweight Useful Apps",
-    description: "Boost productivity with small but powerful tools.",
-    link: "https://yourwebsite.com/light-apps",
-    linkText: "Click to visit"
   }
 ];
 
@@ -327,7 +327,7 @@ function resetBannerInterval() {
 }
 
 // ===================
-// ❤️ Like Functionality (Updated)
+// ❤️ Enhanced Like Functionality
 // ===================
 async function fetchLikes() {
   try {
@@ -344,7 +344,7 @@ async function fetchLikes() {
     });
   } catch (error) {
     console.error('Error fetching likes:', error);
-    // Fallback to local storage if DB fails
+    // Fallback to local storage
     const localLikes = localStorage.getItem('appLikes');
     if (localLikes) {
       appLikes = JSON.parse(localLikes);
