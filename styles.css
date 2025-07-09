@@ -542,24 +542,44 @@ body.dark .rating-stars span.active {
 }
 
 /* ⭐ Edit Stars for Modal */
+/* ⭐ Interactive Star Rating (Editable) */
 .rating-stars-edit {
   display: flex;
-  gap: 4px;
-}
-.rating-stars-edit span {
-  font-size: 1rem;
+  gap: 6px;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 10px 0;
   cursor: pointer;
-  color: rgba(0, 0, 0, 0.795);
-  transition: transform 0.2s, color 0.2s;
 }
-.rating-stars-edit span:hover,
-.rating-stars-edit span.active {
-  transform: scale(1.2);
+
+.rating-stars-edit span {
+  transition: transform 0.2s, color 0.3s, text-shadow 0.3s;
+  color: #bbb;
+}
+
+.rating-stars-edit span.hovered,
+.rating-stars-edit span:hover {
   color: gold;
+  transform: scale(1.2);
+  text-shadow: 0 0 5px gold;
 }
-body.dark .rating-stars-edit span.active {
-  color: #fff;
+
+.rating-stars-edit span.selected {
+  color: gold;
+  text-shadow: 0 0 5px gold;
 }
+
+body.dark .rating-stars-edit span {
+  color: #555;
+}
+
+body.dark .rating-stars-edit span.hovered,
+body.dark .rating-stars-edit span:hover,
+body.dark .rating-stars-edit span.selected {
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd700;
+}
+
 
 /* ===================================================
    🔥 Trending Section (Horizontal Scroll)
@@ -906,7 +926,7 @@ footer {
   .banner-container { height: 200px; }
   .banner-text { font-size: 0.9rem; bottom: 15px; left: 20px; }
   .app-icon { width: 60px; height: 60px; }
-  .app-meta { justify-content: center; }
+  .app-meta { justify-content: left; }
 }
 @media (max-width: 480px) {
   .banner-container { height: 180px; margin-top: 130px; }

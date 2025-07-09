@@ -8,7 +8,7 @@ const defaultApps = [
     link: "uploads/ChronoTrackPro.exe",
     icon: "uploads/icons/chrono.png",
     rating: 4.5,
-    description: "A powerful time tracking tool for project management with advanced analytics and reporting features. Perfect for teams and individual professionals.",
+    description: "A powerful time tracking tool for project management with advanced analytics and reporting features.",
     comments: ["Super fast!", "Clean UI."],
     screenshots: ["uploads/screenshots/chrono1.jpg", "uploads/screenshots/chrono2.jpg"],
     developer: "AY Studios",
@@ -23,7 +23,7 @@ const defaultApps = [
     link: "https://ayushanupamportfolio.netlify.app/",
     icon: "uploads/icons/web.png",
     rating: 4.2,
-    description: "A simple personal portfolio template for developers with customizable sections and responsive design.",
+    description: "A simple personal portfolio template for developers.",
     comments: [],
     screenshots: ["uploads/screenshots/portfolio1.jpg", "uploads/screenshots/portfolio2.jpg"],
     developer: "WebTools Inc.",
@@ -35,7 +35,7 @@ const defaultApps = [
 ];
 
 const storedApps = JSON.parse(localStorage.getItem('allApps') || '[]');
-const apps = storedApps.length > 0 ? storedApps : defaultApps;
+const apps = storedApps.length ? storedApps : defaultApps;
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
 // ==============================
@@ -54,8 +54,7 @@ function loadAppDetailsPage() {
   const apps = JSON.parse(localStorage.getItem('allApps') || '[]');
   const app = apps.find(a => a.name === appName);
   if (!app) return;
-
-  document.getElementById("detailAppName").textContent = app.name;
+document.getElementById("detailAppName").textContent = app.name;
   document.getElementById("detailAppIcon").src = app.icon;
   document.getElementById("detailAppDescription").textContent = app.description;
   document.getElementById("detailAppCategory").textContent = app.category;
@@ -86,16 +85,7 @@ function loadAppDetailsPage() {
   const downloadBtn = document.getElementById("detailDownloadBtn");
   if (isDownloadable(app.link)) {
     downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
-    downloadBtn.onclick = () => {
-      app.downloads++;
-      localStorage.setItem('allApps', JSON.stringify(apps));
-      const a = document.createElement("a");
-      a.href = app.link;
-      a.download = app.link.split('/').pop();
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    };
+    downloadBtn.onclick = () => downloadApp(app.link, app.name);
   } else {
     downloadBtn.textContent = "Visit Site";
     downloadBtn.onclick = () => window.open(app.link, '_blank');
@@ -274,7 +264,7 @@ function initializeApp() {
     document.getElementById("darkModeToggle").textContent = "🌙";
   }
 
-  // ... other initializations
+
 }
 
 
@@ -288,8 +278,7 @@ function openReviewModal(appName) {
   if (!currentApp) return;
 
   document.getElementById("reviewAppName").textContent = `Reviews for ${appName}`;
-  document.getElementById("commentList").innerHTML =
-    currentApp.comments.map(c => `<p>💬 ${c}</p>`).join("");
+  document.getElementById("commentList").innerHTML = currentApp.comments.map(c => `<p>💬 ${c}</p>`).join("");
 
   renderRatingStars(currentApp.rating);
   document.getElementById("newComment").value = "";
@@ -311,18 +300,19 @@ function renderRatingStars(rating) {
 
 function setReviewRating(rating) {
   if (!currentApp) return;
-  currentApp.rating = rating;
 
+  currentApp.rating = rating;
   const allApps = JSON.parse(localStorage.getItem('allApps') || '[]');
-  const appIndex = allApps.findIndex(app => app.name === currentApp.name);
-  if (appIndex !== -1) {
-    allApps[appIndex].rating = rating;
+  const index = allApps.findIndex(app => app.name === currentApp.name);
+  if (index !== -1) {
+    allApps[index].rating = rating;
     localStorage.setItem('allApps', JSON.stringify(allApps));
   }
 
   trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
   renderApps();
   renderTrendingApps();
+  renderRatingStars(rating); // Refresh stars after update
 }
 
 function submitComment() {
@@ -330,9 +320,9 @@ function submitComment() {
   if (comment && currentApp) {
     currentApp.comments.push(comment);
     const allApps = JSON.parse(localStorage.getItem('allApps') || '[]');
-    const appIndex = allApps.findIndex(app => app.name === currentApp.name);
-    if (appIndex !== -1) {
-      allApps[appIndex].comments.push(comment);
+    const index = allApps.findIndex(app => app.name === currentApp.name);
+    if (index !== -1) {
+      allApps[index].comments.push(comment);
       localStorage.setItem('allApps', JSON.stringify(allApps));
     }
     document.getElementById("newComment").value = "";
