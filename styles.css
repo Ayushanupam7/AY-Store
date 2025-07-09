@@ -222,7 +222,14 @@ body.dark .logo-text {
 .category button:hover {
   background-color: #e0e0e0;
 }
-
+.category1 {
+  margin: 1rem auto;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+  gap: 0.5rem;
+}
 /* ====== Banner ====== */
 /* ====== Banner Wrapper ====== */
 .banner-slider {

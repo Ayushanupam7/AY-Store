@@ -5,19 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>App Details - AY Store</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Inline critical dark mode styles */
+        :root.dark {
+            --bg-color: #121212;
+            --text-color: #f1f1f1;
+            --card-bg: #1e1e1e;
+            --header-bg: linear-gradient(90deg, #121212, #3700b3);
+            --button-bg: #6200ea;
+            --meta-bg: #333;
+            --meta-text: #ddd;
+        }
+        body.dark {
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+        
+        /* Header layout */
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(90deg, #000000f8, #7340fd);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        /* Dark mode header colors */
+        body.dark .details-header {
+            background: linear-gradient(90deg, #121212, #3700b3);
+        }
+    </style>
+    <script>
+        // Apply dark mode immediately to prevent flash
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('dark');
+        }
+    </script>
 </head>
 <body>
-    <!-- Back Button Header -->
+    <!-- Back Button Header with Dark Mode Toggle -->
     <header class="details-header">
-        <button class="back-button" onclick="window.history.back()">
+        <button class="back-button" onclick="window.location.href='index.html'">
             ← Back
         </button>
         <h1>App Details</h1>
+        <button class="dark-mode-toggle" onclick="toggleDarkMode()" aria-label="Toggle dark mode">🌗</button>
     </header>
 
     <!-- App Details Container -->
     <main class="app-details-container">
-        <div class="app-details-content">
+        
             <div class="app-details-header">
                 <img id="detailAppIcon" class="detail-app-icon" src="" alt="App Icon">
                 <div class="app-header-info">
@@ -59,13 +117,27 @@
                 <button id="detailDownloadBtn" class="download-btn">Download</button>
                 <button id="detailReviewBtn" class="review-btn">Write Review</button>
             </div>
-        </div>
+        
     </main>
 
-    <script src="script.js"></script>
     <script>
+        // Dark mode toggle function
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.body.classList.contains('dark');
+            localStorage.setItem('darkMode', isDark);
+        }
+
         // Load app details when page loads
         document.addEventListener('DOMContentLoaded', () => {
+            // Apply dark mode if needed
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark');
+                document.documentElement.classList.add('dark');
+            }
+
+            // Get app name from URL
             const params = new URLSearchParams(window.location.search);
             const appName = params.get('app');
             if (appName) {
@@ -74,12 +146,17 @@
         });
 
         function loadAppDetails(appName) {
-            // This would normally come from your data or API
+            // Get apps from localStorage
             const apps = JSON.parse(localStorage.getItem('allApps') || '[]');
             const app = apps.find(a => a.name === appName);
-            if (!app) return;
+            if (!app) {
+                // Redirect if app not found
+                window.location.href = 'index.html';
+                return;
+            }
 
             // Set basic info
+            document.title = `${app.name} - AY Store`;
             document.getElementById("detailAppName").textContent = app.name;
             document.getElementById("detailAppIcon").src = app.icon;
             document.getElementById("detailAppDescription").textContent = app.description;
@@ -102,13 +179,17 @@
             // Set screenshots
             const screenshotsContainer = document.getElementById("appScreenshots");
             screenshotsContainer.innerHTML = '';
-            app.screenshots?.forEach(screenshot => {
-                const img = document.createElement("img");
-                img.src = screenshot;
-                img.alt = `${app.name} screenshot`;
-                img.loading = "lazy";
-                screenshotsContainer.appendChild(img);
-            });
+            if (app.screenshots && app.screenshots.length > 0) {
+                app.screenshots.forEach(screenshot => {
+                    const img = document.createElement("img");
+                    img.src = screenshot;
+                    img.alt = `${app.name} screenshot`;
+                    img.loading = "lazy";
+                    screenshotsContainer.appendChild(img);
+                });
+            } else {
+                screenshotsContainer.innerHTML = '<p class="no-screenshots">No screenshots available</p>';
+            }
 
             // Set download button
             const downloadBtn = document.getElementById("detailDownloadBtn");
@@ -118,8 +199,18 @@
             } else {
                 downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
                 downloadBtn.onclick = () => {
-                    // Download logic here
-                    window.location.href = app.link;
+                    // Track download
+                    app.downloads++;
+                    localStorage.setItem('allApps', JSON.stringify(apps));
+                    // Start download
+                    const a = document.createElement("a");
+                    a.href = app.link;
+                    a.download = app.link.split('/').pop();
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    // Update counter
+                    downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
                 };
             }
 
