@@ -516,6 +516,7 @@ body.dark .app-details .description {
   margin-top: 0.5rem;
 }
 .buttons button {
+  
   background: #6200ea;
   color: white;
   border: none;
@@ -528,21 +529,23 @@ body.dark .app-details .description {
   background: #3700b3;
 }
 .visit-btn {
-  background-color: #03a9f4;
+   background: #0e0e0ee1;
   color: white;
   padding: 6px 12px;
   border-radius: 6px;
+  border: none;
   text-decoration: none;
-  font-weight: 500;
+  
   display: inline-block;
   transition: background 0.3s ease;
 }
 .visit-btn:hover {
-  background-color: #0288d1;
+  background: #3700b3;
 }
 
 
 /* ====== Trending Section (Horizontal Scroll) ====== */
+
 .trending-section {
   padding: 2rem 1rem;
   position: relative;
@@ -596,17 +599,52 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
 
 /* Trending App Card */
 .trending-card {
-  display: inline-block;
-  width: auto;
-  min-width: auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 1rem;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  min-width: 200px;
+}
+.trending-card .card-content.minimal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
 }
 
+.trending-card .app-icon {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 0.5rem;
+}
+
+.trending-card h1 {
+  font-size: 1.2rem;
+  margin: 0;
+  order: 1; /* Ensures name stays above button */
+}
+
+.trending-card .buttons {
+  order: 2; /* Ensures button stays below name */
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.trending-card .buttons button,
+.trending-card .buttons .visit-btn {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.trending-rank {
+  top: 8px;
+  left: 8px;
+  font-size: 0.8rem;
+  padding: 3px 6px;
+}
 .trending-card:hover {
   transform: scale(1.02);
   border-radius: 16px;
@@ -619,17 +657,14 @@ body.dark .trending-card {
 }
 
 .trending-rank {
+  font-weight: bold;
+  background: #fd4040;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
   position: absolute;
   top: 10px;
-  right: 10px;
-  background: #ff6f61;
-  color: white;
-  font-size: 0.85rem;
-  font-weight: bold;
-  padding: 4px 10px;
-  border-radius: 20px;
-  z-index: 10;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  left: 10px;
 }
 
 

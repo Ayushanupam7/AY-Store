@@ -159,16 +159,11 @@ function renderTrendingApps() {
 
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
-      <div class="card-content">
+      <div class="card-content minimal">
         <img src="${app.icon}" alt="${app.name}" class="app-icon" loading="lazy" />
-        <div class="app-details">
-          <h3>${app.name}</h3>
-          <p>${app.category}</p>
-          <p class="description">${app.description}</p>
-          <div class="buttons">
-            ${buttonHTML}
-            <button onclick="event.stopPropagation();openReviewModal('${app.name}')">Review</button>
-          </div>
+        <h1>${app.name}</h1>
+        <div class="buttons">
+          ${buttonHTML}
         </div>
       </div>
     `;
