@@ -344,6 +344,7 @@ function closeReviewModal() {
   document.getElementById("reviewModal").style.display = "none";
 }
 
+
 // ==============================
 // 🖼️ BANNER SLIDER SYSTEMS
 // ==============================
@@ -375,7 +376,14 @@ function showBanner(index) {
   const preloadImage = new Image();
   preloadImage.src = banners[nextIndex].image;
 
-  document.getElementById("bannerImage").src = banner.image;
+  const bannerImage = document.getElementById("bannerImage");
+  bannerImage.style.opacity = 0;
+
+  setTimeout(() => {
+    bannerImage.src = banner.image;
+    bannerImage.style.opacity = 1;
+  }, 300);
+
   document.getElementById("bannerText").textContent = banner.text || "";
   document.getElementById("bannerDesc").textContent = banner.description || "";
   document.getElementById("bannerLinkWrapper").href = banner.link;
@@ -403,16 +411,18 @@ function resetBannerInterval() {
 
 function addBannerSwipeSupport() {
   const banner = document.querySelector(".banner-slider");
-  let startX = 0;
+  let startX = 0, endX = 0;
 
   banner.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
 
-  banner.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
-    const diffX = startX - endX;
+  banner.addEventListener("touchmove", e => {
+    endX = e.touches[0].clientX;
+  });
 
+  banner.addEventListener("touchend", () => {
+    const diffX = startX - endX;
     if (Math.abs(diffX) > 50) {
       if (diffX > 0) {
         nextBanner();
@@ -420,6 +430,7 @@ function addBannerSwipeSupport() {
         currentBanner = (currentBanner - 1 + banners.length) % banners.length;
         showBanner(currentBanner);
       }
+      resetBannerInterval();
     }
   });
 }
