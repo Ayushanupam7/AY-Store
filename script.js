@@ -308,7 +308,7 @@ function closeReviewModal() {
 }
 
 // ==============================
-// 🖼️ BANNER SLIDER SYSTEM
+// 🖼️ BANNER SLIDER SYSTEMS
 // ==============================
 const banners = [
   {
