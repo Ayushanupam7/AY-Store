@@ -345,7 +345,7 @@ function closeReviewModal() {
 }
 
 // ==============================
-// 🖼️ BANNER SLIDER SYSTEMS (with Swipe + Animation)
+// 🖼️ BANNER SLIDER SYSTEM
 // ==============================
 const banners = [
   {
@@ -372,29 +372,16 @@ let bannerInterval;
 function showBanner(index) {
   const banner = banners[index];
   const nextIndex = (index + 1) % banners.length;
-  const preloadImage = new Image();
-  preloadImage.src = banners[nextIndex].image;
 
-  const bannerImage = document.getElementById("bannerImage");
-  const bannerText = document.getElementById("bannerText");
-  const bannerDesc = document.getElementById("bannerDesc");
-  const bannerLink = document.getElementById("bannerLinkWrapper");
+  // Preload next image
+  const preload = new Image();
+  preload.src = banners[nextIndex].image;
 
-  // Add transition class
-  bannerImage.classList.add("fade-out");
-
-  setTimeout(() => {
-    bannerImage.src = banner.image;
-    bannerText.textContent = banner.text || "";
-    bannerDesc.textContent = banner.description || "";
-    bannerLink.href = banner.link;
-    bannerImage.classList.remove("fade-out");
-    bannerImage.classList.add("fade-in");
-  }, 200);
-
-  setTimeout(() => {
-    bannerImage.classList.remove("fade-in");
-  }, 600);
+  const bannerImg = document.getElementById("bannerImage");
+  bannerImg.src = banner.image;
+  document.getElementById("bannerText").textContent = banner.text || "";
+  document.getElementById("bannerDesc").textContent = banner.description || "";
+  document.getElementById("bannerLinkWrapper").href = banner.link;
 
   document.getElementById("bannerDots").innerHTML = banners
     .map((_, i) => `<span class="${i === index ? 'active' : ''}" onclick="setBanner(${i})"></span>`)
@@ -412,11 +399,6 @@ function nextBanner() {
   showBanner(currentBanner);
 }
 
-function previousBanner() {
-  currentBanner = (currentBanner - 1 + banners.length) % banners.length;
-  showBanner(currentBanner);
-}
-
 function resetBannerInterval() {
   clearInterval(bannerInterval);
   bannerInterval = setInterval(nextBanner, 5000);
@@ -424,24 +406,49 @@ function resetBannerInterval() {
 
 function addBannerSwipeSupport() {
   const banner = document.querySelector(".banner-slider");
+  const bannerImage = document.getElementById("bannerImage");
   let startX = 0;
 
   banner.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
 
+  banner.addEventListener("touchmove", e => {
+    const moveX = e.touches[0].clientX;
+    const diffX = moveX - startX;
+    bannerImage.style.transform = `translateX(${diffX * 0.2}px)`; // shift banner
+  });
+
   banner.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
     const diffX = startX - endX;
 
+    bannerImage.style.transition = "transform 0.2s ease-out";
+    bannerImage.style.transform = "translateX(0px)";
+    setTimeout(() => {
+      bannerImage.style.transition = "";
+    }, 200);
+
     if (Math.abs(diffX) > 50) {
       if (diffX > 0) {
-        nextBanner();
+        nextBanner(); // swipe left
       } else {
-        previousBanner();
+        currentBanner = (currentBanner - 1 + banners.length) % banners.length;
+        showBanner(currentBanner); // swipe right
       }
     }
   });
+}
+
+// Call these during DOMContentLoaded or in initializeApp()
+function initBannerSlider() {
+  showBanner(currentBanner);
+  resetBannerInterval();
+  addBannerSwipeSupport();
+
+  const banner = document.querySelector('.banner-slider');
+  banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
+  banner.addEventListener('mouseleave', resetBannerInterval);
 }
 
 
@@ -463,9 +470,7 @@ function initializeApp() {
   showBanner(currentBanner);
   resetBannerInterval();
 
-  const banner = document.querySelector('.banner-slider');
-  banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
-  banner.addEventListener('mouseleave', resetBannerInterval);
+  
 
   const urlParams = new URLSearchParams(window.location.search);
   const reviewApp = urlParams.get('review');
