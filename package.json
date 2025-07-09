@@ -1,7 +1,0 @@
-{
-  "name": "ay-store",
-  "version": "1.0.0",
-  "dependencies": {
-    "mongodb": "^4.13.0"
-  }
-}

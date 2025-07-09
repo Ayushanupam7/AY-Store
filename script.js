@@ -1,6 +1,12 @@
-// =========================
-// 🔧 App Data Configuration
-// =========================
+// ==============================
+// 🏗️ APPLICATION CONFIGURATION
+// ==============================
+/**
+ * Core application data structure containing:
+ * - App name, category, download link
+ * - Icon path, rating, description
+ * - User comments array
+ */
 const apps = [
   {
     name: "ChronoTrackPro",
@@ -22,20 +28,17 @@ const apps = [
   }
 ];
 
-// 📈 Sort Trending by Rating Descending
+// Pre-sort trending apps by rating (descending) for immediate display
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
-// Store app likes - will be populated from DB
-let appLikes = {};
+// ==============================
+// 🖥️ UI RENDERING COMPONENTS
+// ==============================
 
-// ✅ Check if link is downloadable
-function isDownloadable(link) {
-  return link.startsWith("uploads/") || link.endsWith(".exe") || link.endsWith(".zip");
-}
-
-// ==========================
-// 📦 Render App Card Grid
-// ==========================
+/**
+ * Renders the main app grid with filtering capability
+ * @param {Array} filteredApps - Optional filtered app list (defaults to all apps)
+ */
 function renderApps(filteredApps = apps) {
   const grid = document.getElementById("appGrid");
   grid.innerHTML = "";
@@ -43,14 +46,14 @@ function renderApps(filteredApps = apps) {
   filteredApps.forEach(app => {
     const card = document.createElement("div");
     card.className = "app-card";
-
+    
+    // Determine if the app is downloadable or external link
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
       ? `<button onclick="downloadApp('${app.link}')">Download</button>`
       : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
 
-    const likeCount = appLikes[app.name] || 0;
-    
+    // Build card HTML structure
     card.innerHTML = `
       <div class="card-content">
         <div class="star-badge">⭐ ${app.rating}</div>
@@ -62,20 +65,19 @@ function renderApps(filteredApps = apps) {
           <div class="buttons">
             ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
-            <button class="like-btn" onclick="likeApp('${app.name}')" id="like-${app.name.replace(/\s+/g, '-')}">
-              ❤️ <span class="like-count">${likeCount}</span>
-            </button>
           </div>
         </div>
       </div>
     `;
+    
     grid.appendChild(card);
   });
 }
 
-// ========================================
-// 🚀 Render Trending Apps in Scrollable Row
-// ========================================
+/**
+ * Renders trending apps in a horizontal scrollable section
+ * Includes ranking indicators (1st, 2nd, etc.)
+ */
 function renderTrendingApps() {
   const trendingGrid = document.getElementById("trendingGrid");
   if (!trendingGrid) return;
@@ -84,14 +86,12 @@ function renderTrendingApps() {
   trendingApps.forEach((app, index) => {
     const card = document.createElement("div");
     card.className = "app-card trending-card";
-
+    
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
       ? `<button onclick="downloadApp('${app.link}')">Download</button>`
       : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
 
-    const likeCount = appLikes[app.name] || 0;
-    
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
       <div class="card-content">
@@ -103,9 +103,6 @@ function renderTrendingApps() {
           <div class="buttons">
             ${buttonHTML}
             <button onclick="openReviewModal('${app.name}')">Review</button>
-            <button class="like-btn" onclick="likeApp('${app.name}')" id="like-${app.name.replace(/\s+/g, '-')}">
-              ❤️ <span class="like-count">${likeCount}</span>
-            </button>
           </div>
         </div>
       </div>
@@ -114,9 +111,44 @@ function renderTrendingApps() {
   });
 }
 
-// ======================
-// ⬇️ File Download Logic
-// ======================
+// ==============================
+// 🛠️ UTILITY FUNCTIONS
+// ==============================
+
+/**
+ * Checks if a link is downloadable based on URL pattern
+ * @param {string} link - The URL to check
+ * @returns {boolean} True if downloadable
+ */
+function isDownloadable(link) {
+  return link.startsWith("uploads/") || 
+         link.endsWith(".exe") || 
+         link.endsWith(".zip");
+}
+
+/**
+ * Debounce function to limit rapid firing of events
+ * @param {Function} func - Function to debounce
+ * @param {number} wait - Delay in milliseconds
+ * @returns {Function} Debounced function
+ */
+function debounce(func, wait) {
+  let timeout;
+  return function() {
+    const context = this, args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(context, args), wait);
+  };
+}
+
+// ==============================
+// 📥 DOWNLOAD HANDLING
+// ==============================
+
+/**
+ * Handles file downloads by creating temporary anchor element
+ * @param {string} link - Download URL
+ */
 function downloadApp(link) {
   const a = document.createElement("a");
   a.href = link;
@@ -127,54 +159,60 @@ function downloadApp(link) {
   document.body.removeChild(a);
 }
 
-// =====================
-// 🔍 Category Filtering
-// =====================
+// // ==============================
+// # 🔍 SEARCH & FILTERING
+// # ==============================
+
+// /**
+//  * Filters apps by category and re-renders grid
+//  * @param {string} category - Category to filter by ("All" shows all apps)
+//  */
 function filterApps(category) {
   if (category === "All") return renderApps();
   const filtered = apps.filter(app => app.category === category);
   renderApps(filtered);
 }
 
-// ===================
-// 🌗 Dark Mode Toggle
-// ===================
+// Search functionality with debounce
+document.getElementById("searchBar").addEventListener("input", 
+  debounce(function() {
+    const val = this.value.toLowerCase();
+    const filtered = apps.filter(app => 
+      app.name.toLowerCase().includes(val) || 
+      app.description.toLowerCase().includes(val)
+    );
+    renderApps(filtered);
+  }, 300)
+);
+
+// // ==============================
+// # 🌙 DARK MODE HANDLING
+// # ==============================
+
+// /**
+//  * Toggles dark mode and persists preference in localStorage
+//  */
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
   localStorage.setItem('darkMode', document.body.classList.contains('dark'));
 }
 
-// =====================
-// 🔎 Search Functionality
-// =====================
-document.getElementById("searchBar").addEventListener("input", debounce(function () {
-  const val = this.value.toLowerCase();
-  const filtered = apps.filter(app => 
-    app.name.toLowerCase().includes(val) || 
-    app.description.toLowerCase().includes(val)
-  );
-  renderApps(filtered);
-}, 300));
+// // ==============================
+// # 💬 REVIEW SYSTEM
+// # ==============================
 
-function debounce(func, wait) {
-  let timeout;
-  return function() {
-    const context = this, args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(context, args), wait);
-  };
-}
+let currentApp = null; // Currently selected app for reviews
 
-// ========================
-// 💬 Review Modal Section
-// ========================
-let currentApp = null;
-
+/**
+ * Opens review modal and fetches latest data from server
+ * @param {string} appName - Name of app to review
+ */
 async function openReviewModal(appName) {
   const app = apps.find(a => a.name === appName);
   currentApp = app;
 
   try {
+    // Fetch updated app data from server
     const response = await fetch(`/.netlify/functions/get-app?name=${encodeURIComponent(appName)}`);
     if (response.ok) {
       const data = await response.json();
@@ -185,6 +223,7 @@ async function openReviewModal(appName) {
     console.error('Error fetching app data:', error);
   }
 
+  // Update modal UI
   document.getElementById("reviewAppName").textContent = `Reviews for ${app.name}`;
   document.getElementById("commentList").innerHTML =
     app.comments.map(c => `<p>💬 ${c}</p>`).join("");
@@ -194,6 +233,10 @@ async function openReviewModal(appName) {
   document.getElementById("reviewModal").style.display = "flex";
 }
 
+/**
+ * Renders interactive rating stars
+ * @param {number} rating - Current rating (1-5)
+ */
 function renderRatingStars(rating) {
   const starsContainer = document.getElementById("reviewRatingStars");
   starsContainer.innerHTML = "";
@@ -203,12 +246,15 @@ function renderRatingStars(rating) {
     star.textContent = "★";
     star.classList.add("review-star");
     if (i <= rating) star.classList.add("active");
-
     star.addEventListener("click", () => setReviewRating(i));
     starsContainer.appendChild(star);
   }
 }
 
+/**
+ * Updates rating and syncs with server
+ * @param {number} rating - New rating (1-5)
+ */
 async function setReviewRating(rating) {
   if (!currentApp) return;
   currentApp.rating = rating;
@@ -223,10 +269,9 @@ async function setReviewRating(rating) {
       })
     });
     
-    if (!response.ok) {
-      throw new Error('Failed to update rating');
-    }
+    if (!response.ok) throw new Error('Failed to update rating');
     
+    // Update trending list and re-render
     trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
     renderApps();
     renderTrendingApps();
@@ -236,10 +281,9 @@ async function setReviewRating(rating) {
   }
 }
 
-function closeReviewModal() {
-  document.getElementById("reviewModal").style.display = "none";
-}
-
+/**
+ * Submits new comment to server and updates UI
+ */
 async function submitComment() {
   const comment = document.getElementById("newComment").value.trim();
   if (comment && currentApp) {
@@ -253,13 +297,11 @@ async function submitComment() {
         })
       });
       
-      if (!response.ok) {
-        throw new Error('Failed to add comment');
-      }
+      if (!response.ok) throw new Error('Failed to add comment');
       
       currentApp.comments.push(comment);
       document.getElementById("newComment").value = "";
-      openReviewModal(currentApp.name);
+      openReviewModal(currentApp.name); // Refresh modal
     } catch (error) {
       console.error('Error adding comment:', error);
       alert('Failed to add comment. Please try again.');
@@ -267,18 +309,28 @@ async function submitComment() {
   }
 }
 
-// ==================
-// 🎞 Banner Slider
-// ==================
+function closeReviewModal() {
+  document.getElementById("reviewModal").style.display = "none";
+}
+
+//  ==============================
+// # 🖼️ BANNER SLIDER SYSTEM
+// # ==============================
+
 const banners = [
   {
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
-    text: "Welcome to AY Store",
-    description: "Discover amazing apps for all your needs"
+    
   },
   {
     image: "uploads/banners/banner2.jpg",
+    link: "#trendingGrid",
+    text: "Trending Apps",
+    description: "Check out what's popular this week"
+  },
+  {
+    image: "uploads/banners/banner3.jpg",
     link: "#trendingGrid",
     text: "Trending Apps",
     description: "Check out what's popular this week"
@@ -288,126 +340,66 @@ const banners = [
 let currentBanner = 0;
 let bannerInterval;
 
+/**
+ * Displays specified banner and preloads next one
+ * @param {number} index - Banner index to show
+ */
 function showBanner(index) {
   const banner = banners[index];
-  const bannerImage = document.getElementById("bannerImage");
   
-  // Preload next banner image
+  // Preload next banner for smoother transitions
   const nextIndex = (index + 1) % banners.length;
   const nextBanner = banners[nextIndex];
   const preloadImage = new Image();
   preloadImage.src = nextBanner.image;
 
-  bannerImage.src = banner.image;
-  bannerImage.alt = banner.text || "Banner";
+  // Update DOM elements
+  document.getElementById("bannerImage").src = banner.image;
   document.getElementById("bannerText").textContent = banner.text || "";
   document.getElementById("bannerDesc").textContent = banner.description || "";
   document.getElementById("bannerLinkWrapper").href = banner.link;
 
-  // Update dots
+  // Update navigation dots
   document.getElementById("bannerDots").innerHTML = banners
     .map((_, i) => `<span class="${i === index ? 'active' : ''}" onclick="setBanner(${i})"></span>`)
     .join("");
 }
 
+/**
+ * Sets specific banner and resets auto-rotation timer
+ * @param {number} index - Banner index to display
+ */
 function setBanner(index) {
   currentBanner = index;
   showBanner(index);
   resetBannerInterval();
 }
 
+/**
+ * Advances to next banner in sequence
+ */
 function nextBanner() {
   currentBanner = (currentBanner + 1) % banners.length;
   showBanner(currentBanner);
 }
 
+/**
+ * Resets auto-rotation interval
+ */
 function resetBannerInterval() {
   clearInterval(bannerInterval);
   bannerInterval = setInterval(nextBanner, 5000);
 }
 
-// ===================
-// ❤️ Enhanced Like Functionality
-// ===================
-async function fetchLikes() {
-  try {
-    const response = await fetch('/.netlify/functions/get-likes');
-    if (!response.ok) {
-      throw new Error(`HTTP error! Status: ${response.status}`);
-    }
-    const data = await response.json();
-    appLikes = data;
-    
-    // Update all like buttons
-    Object.entries(appLikes).forEach(([appName, likes]) => {
-      updateLikeButton(appName, likes);
-    });
-  } catch (error) {
-    console.error('Error fetching likes:', error);
-    // Fallback to local storage
-    const localLikes = localStorage.getItem('appLikes');
-    if (localLikes) {
-      appLikes = JSON.parse(localLikes);
-    }
-  }
-}
+// // ==============================
+// # 🚀 INITIALIZATION
+// # ==============================
 
-async function likeApp(appName) {
-  const likeButton = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
-  if (!likeButton) return;
-  
-  // Optimistic UI update
-  const likeCountElement = likeButton.querySelector('.like-count');
-  const currentCount = parseInt(likeCountElement.textContent) || 0;
-  likeCountElement.textContent = currentCount + 1;
-  likeButton.classList.add('heart-animation');
-  likeButton.disabled = true;
 
-  try {
-    const response = await fetch('/.netlify/functions/update-likes', {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ appName })
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to update likes');
-    }
-
-    const data = await response.json();
-    appLikes[appName] = data.newCount;
-    
-    // Save to local storage as backup
-    localStorage.setItem('appLikes', JSON.stringify(appLikes));
-  } catch (error) {
-    console.error('Like error:', error);
-    // Revert optimistic update
-    likeCountElement.textContent = currentCount;
-    alert(error.message || 'Failed to save your like. Please try again.');
-  } finally {
-    setTimeout(() => {
-      likeButton.classList.remove('heart-animation');
-      likeButton.disabled = false;
-    }, 1000);
-  }
-}
-
-function updateLikeButton(appName, likes) {
-  const likeElement = document.getElementById(`like-${appName.replace(/\s+/g, '-')}`);
-  if (likeElement) {
-    likeElement.querySelector('.like-count').textContent = likes;
-  }
-}
-
-// ===================
-// 🚀 Initialize App
-// ===================
+//  * Main initialization function when DOM is loaded
+//  *
 document.addEventListener('DOMContentLoaded', () => {
-  // Set dark mode if preferred
+  // Restore dark mode preference
   if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark');
   }
@@ -418,10 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
   showBanner(currentBanner);
   resetBannerInterval();
 
-  // Fetch initial data
-  fetchLikes();
-
-  // Pause banner on hover
+  // Pause banner auto-rotation on hover
   const banner = document.querySelector('.banner-slider');
   banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
   banner.addEventListener('mouseleave', resetBannerInterval);
