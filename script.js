@@ -6,7 +6,7 @@
  * - App name, category, download link
  * - Icon path, rating, description
  * - User comments array
- * - Additional details for app details modal
+ * - Additional details for app details page
  */
 const apps = [
   {
@@ -70,20 +70,30 @@ const apps = [
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
 
 // ==============================
-// 📱 APP DETAILS MODAL FUNCTIONS
+// 📱 APP DETAILS PAGE FUNCTIONS
 // ==============================
 
-let currentAppDetails = null;
-
 /**
- * Opens app details modal
+ * Opens app details in a new page
  * @param {string} appName - Name of app to show details for
  */
-function openAppDetailsModal(appName) {
+function openAppDetailsPage(appName) {
+  // Save apps to localStorage so details page can access
+  localStorage.setItem('allApps', JSON.stringify(apps));
+  window.location.href = `app-details.html?app=${encodeURIComponent(appName)}`;
+}
+
+/**
+ * Loads app details on the details page
+ */
+function loadAppDetailsPage() {
+  const params = new URLSearchParams(window.location.search);
+  const appName = params.get('app');
+  if (!appName) return;
+
+  const apps = JSON.parse(localStorage.getItem('allApps') || []);
   const app = apps.find(a => a.name === appName);
   if (!app) return;
-  
-  currentAppDetails = app;
 
   // Set basic info
   document.getElementById("detailAppName").textContent = app.name;
@@ -94,6 +104,7 @@ function openAppDetailsModal(appName) {
   document.getElementById("detailAppVersion").textContent = `v${app.version}`;
   document.getElementById("detailAppDeveloper").textContent = app.developer;
   document.getElementById("detailAppUpdated").textContent = new Date(app.updated).toLocaleDateString();
+  document.getElementById("detailAppDownloads").textContent = `${app.downloads.toLocaleString()}+ downloads`;
 
   // Set rating stars
   const ratingContainer = document.getElementById("detailAppRating");
@@ -120,29 +131,26 @@ function openAppDetailsModal(appName) {
   if (isDownloadable(app.link)) {
     downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
     downloadBtn.onclick = () => {
-      downloadApp(app.link);
+      // Track download
       app.downloads++;
-      downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
+      localStorage.setItem('allApps', JSON.stringify(apps));
+      // Start download
+      const a = document.createElement("a");
+      a.href = app.link;
+      a.download = app.link.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     };
   } else {
     downloadBtn.textContent = "Visit Site";
     downloadBtn.onclick = () => window.open(app.link, '_blank');
   }
 
-  // Show modal
-  document.getElementById("appDetailsModal").style.display = "flex";
-}
-
-function closeAppDetailsModal() {
-  document.getElementById("appDetailsModal").style.display = "none";
-  currentAppDetails = null;
-}
-
-function openReviewModalFromDetails() {
-  closeAppDetailsModal();
-  if (currentAppDetails) {
-    openReviewModal(currentAppDetails.name);
-  }
+  // Set review button
+  document.getElementById("detailReviewBtn").onclick = () => {
+    window.location.href = `index.html?review=${encodeURIComponent(app.name)}`;
+  };
 }
 
 // ==============================
@@ -160,18 +168,13 @@ function renderApps(filteredApps = apps) {
   filteredApps.forEach(app => {
     const card = document.createElement("div");
     card.className = "app-card";
-    card.onclick = (e) => {
-      // Don't open details if clicking on a button
-      if (!e.target.closest('button, a')) {
-        openAppDetailsModal(app.name);
-      }
-    };
+    card.onclick = () => openAppDetailsPage(app.name);
     
     // Determine if the app is downloadable or external link
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
-      ? `<button onclick="downloadApp('${app.link}')">Download</button>`
-      : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
+      ? `<button onclick="event.stopPropagation();downloadApp('${app.link}','${app.name}')">Download</button>`
+      : `<a href="${app.link}" class="visit-btn" target="_blank" onclick="event.stopPropagation()">Visit Site</a>`;
 
     // Build card HTML structure
     card.innerHTML = `
@@ -184,7 +187,7 @@ function renderApps(filteredApps = apps) {
           <p class="description">${app.description}</p>
           <div class="buttons">
             ${buttonHTML}
-            <button onclick="openReviewModal('${app.name}')">Review</button>
+            <button onclick="event.stopPropagation();openReviewModal('${app.name}')">Review</button>
           </div>
         </div>
       </div>
@@ -206,12 +209,12 @@ function renderTrendingApps() {
   trendingApps.forEach((app, index) => {
     const card = document.createElement("div");
     card.className = "app-card trending-card";
-    card.onclick = () => openAppDetailsModal(app.name);
+    card.onclick = () => openAppDetailsPage(app.name);
     
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
-      ? `<button onclick="downloadApp('${app.link}')">Download</button>`
-      : `<a href="${app.link}" class="visit-btn" target="_blank">Visit Site</a>`;
+      ? `<button onclick="event.stopPropagation();downloadApp('${app.link}','${app.name}')">Download</button>`
+      : `<a href="${app.link}" class="visit-btn" target="_blank" onclick="event.stopPropagation()">Visit Site</a>`;
 
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
@@ -223,7 +226,7 @@ function renderTrendingApps() {
           <p class="description">${app.description}</p>
           <div class="buttons">
             ${buttonHTML}
-            <button onclick="openReviewModal('${app.name}')">Review</button>
+            <button onclick="event.stopPropagation();openReviewModal('${app.name}')">Review</button>
           </div>
         </div>
       </div>
@@ -269,8 +272,16 @@ function debounce(func, wait) {
 /**
  * Handles file downloads by creating temporary anchor element
  * @param {string} link - Download URL
+ * @param {string} appName - Name of app being downloaded
  */
-function downloadApp(link) {
+function downloadApp(link, appName) {
+  const app = apps.find(a => a.name === appName);
+  if (app) {
+    app.downloads++;
+    renderApps();
+    renderTrendingApps();
+  }
+  
   const a = document.createElement("a");
   a.href = link;
   a.target = "_blank";
@@ -521,13 +532,19 @@ function resetBannerInterval() {
 /**
  * Main initialization function when DOM is loaded
  */
-document.addEventListener('DOMContentLoaded', () => {
+function initializeApp() {
   // Restore dark mode preference
   if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark');
   }
 
-  // Initial renders
+  // Check if we're on the details page
+  if (window.location.pathname.includes('app-details.html')) {
+    loadAppDetailsPage();
+    return;
+  }
+
+  // Initial renders for main page
   renderApps();
   renderTrendingApps();
   showBanner(currentBanner);
@@ -537,4 +554,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const banner = document.querySelector('.banner-slider');
   banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
   banner.addEventListener('mouseleave', resetBannerInterval);
-});
+
+  // Handle review parameter in URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const reviewApp = urlParams.get('review');
+  if (reviewApp) {
+    openReviewModal(reviewApp);
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initializeApp);

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App Details - AY Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Back Button Header -->
+    <header class="details-header">
+        <button class="back-button" onclick="window.history.back()">
+            ← Back
+        </button>
+        <h1>App Details</h1>
+    </header>
+
+    <!-- App Details Container -->
+    <main class="app-details-container">
+        <div class="app-details-content">
+            <div class="app-details-header">
+                <img id="detailAppIcon" class="detail-app-icon" src="" alt="App Icon">
+                <div class="app-header-info">
+                    <h2 id="detailAppName"></h2>
+                    <div id="detailAppRating" class="detail-rating"></div>
+                    <div class="app-meta">
+                        <span id="detailAppCategory"></span>
+                        <span id="detailAppSize"></span>
+                        <span id="detailAppVersion"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-screenshots" id="appScreenshots"></div>
+            
+            <div class="app-details-body">
+                <div class="detail-section">
+                    <h3>Description</h3>
+                    <p id="detailAppDescription"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Developer</h3>
+                    <p id="detailAppDeveloper"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Last Updated</h3>
+                    <p id="detailAppUpdated"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Downloads</h3>
+                    <p id="detailAppDownloads"></p>
+                </div>
+            </div>
+            
+            <div class="app-details-footer">
+                <button id="detailDownloadBtn" class="download-btn">Download</button>
+                <button id="detailReviewBtn" class="review-btn">Write Review</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Load app details when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const appName = params.get('app');
+            if (appName) {
+                loadAppDetails(appName);
+            }
+        });
+
+        function loadAppDetails(appName) {
+            // This would normally come from your data or API
+            const apps = JSON.parse(localStorage.getItem('allApps') || '[]');
+            const app = apps.find(a => a.name === appName);
+            if (!app) return;
+
+            // Set basic info
+            document.getElementById("detailAppName").textContent = app.name;
+            document.getElementById("detailAppIcon").src = app.icon;
+            document.getElementById("detailAppDescription").textContent = app.description;
+            document.getElementById("detailAppCategory").textContent = app.category;
+            document.getElementById("detailAppSize").textContent = app.size;
+            document.getElementById("detailAppVersion").textContent = `v${app.version}`;
+            document.getElementById("detailAppDeveloper").textContent = app.developer;
+            document.getElementById("detailAppUpdated").textContent = new Date(app.updated).toLocaleDateString();
+            document.getElementById("detailAppDownloads").textContent = `${app.downloads.toLocaleString()}+ downloads`;
+
+            // Set rating stars
+            const ratingContainer = document.getElementById("detailAppRating");
+            ratingContainer.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const star = document.createElement("span");
+                star.textContent = i <= Math.floor(app.rating) ? "★" : "☆";
+                ratingContainer.appendChild(star);
+            }
+
+            // Set screenshots
+            const screenshotsContainer = document.getElementById("appScreenshots");
+            screenshotsContainer.innerHTML = '';
+            app.screenshots?.forEach(screenshot => {
+                const img = document.createElement("img");
+                img.src = screenshot;
+                img.alt = `${app.name} screenshot`;
+                img.loading = "lazy";
+                screenshotsContainer.appendChild(img);
+            });
+
+            // Set download button
+            const downloadBtn = document.getElementById("detailDownloadBtn");
+            if (app.link.startsWith("http") && !app.link.endsWith(".exe") && !app.link.endsWith(".zip")) {
+                downloadBtn.textContent = "Visit Site";
+                downloadBtn.onclick = () => window.open(app.link, '_blank');
+            } else {
+                downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
+                downloadBtn.onclick = () => {
+                    // Download logic here
+                    window.location.href = app.link;
+                };
+            }
+
+            // Set review button
+            document.getElementById("detailReviewBtn").onclick = () => {
+                window.location.href = `index.html?review=${encodeURIComponent(app.name)}`;
+            };
+        }
+    </script>
+</body>
+</html>
