@@ -344,9 +344,8 @@ function closeReviewModal() {
   document.getElementById("reviewModal").style.display = "none";
 }
 
-
 // ==============================
-// 🖼️ BANNER SLIDER SYSTEMS
+// 🖼️ BANNER SLIDER SYSTEMS (with Swipe + Animation)
 // ==============================
 const banners = [
   {
@@ -377,16 +376,25 @@ function showBanner(index) {
   preloadImage.src = banners[nextIndex].image;
 
   const bannerImage = document.getElementById("bannerImage");
-  bannerImage.style.opacity = 0;
+  const bannerText = document.getElementById("bannerText");
+  const bannerDesc = document.getElementById("bannerDesc");
+  const bannerLink = document.getElementById("bannerLinkWrapper");
+
+  // Add transition class
+  bannerImage.classList.add("fade-out");
 
   setTimeout(() => {
     bannerImage.src = banner.image;
-    bannerImage.style.opacity = 1;
-  }, 300);
+    bannerText.textContent = banner.text || "";
+    bannerDesc.textContent = banner.description || "";
+    bannerLink.href = banner.link;
+    bannerImage.classList.remove("fade-out");
+    bannerImage.classList.add("fade-in");
+  }, 200);
 
-  document.getElementById("bannerText").textContent = banner.text || "";
-  document.getElementById("bannerDesc").textContent = banner.description || "";
-  document.getElementById("bannerLinkWrapper").href = banner.link;
+  setTimeout(() => {
+    bannerImage.classList.remove("fade-in");
+  }, 600);
 
   document.getElementById("bannerDots").innerHTML = banners
     .map((_, i) => `<span class="${i === index ? 'active' : ''}" onclick="setBanner(${i})"></span>`)
@@ -404,6 +412,11 @@ function nextBanner() {
   showBanner(currentBanner);
 }
 
+function previousBanner() {
+  currentBanner = (currentBanner - 1 + banners.length) % banners.length;
+  showBanner(currentBanner);
+}
+
 function resetBannerInterval() {
   clearInterval(bannerInterval);
   bannerInterval = setInterval(nextBanner, 5000);
@@ -411,29 +424,26 @@ function resetBannerInterval() {
 
 function addBannerSwipeSupport() {
   const banner = document.querySelector(".banner-slider");
-  let startX = 0, endX = 0;
+  let startX = 0;
 
   banner.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
   });
 
-  banner.addEventListener("touchmove", e => {
-    endX = e.touches[0].clientX;
-  });
-
-  banner.addEventListener("touchend", () => {
+  banner.addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
     const diffX = startX - endX;
+
     if (Math.abs(diffX) > 50) {
       if (diffX > 0) {
         nextBanner();
       } else {
-        currentBanner = (currentBanner - 1 + banners.length) % banners.length;
-        showBanner(currentBanner);
+        previousBanner();
       }
-      resetBannerInterval();
     }
   });
 }
+
 
 // ==============================
 // 🚀 INITIALIZATION
@@ -463,5 +473,9 @@ function initializeApp() {
     openReviewModal(reviewApp);
   }
 }
+document.addEventListener('DOMContentLoaded', () => {
+  initializeApp();
+  addBannerSwipeSupport(); // 👈 Enable swipe on mobile
+});
 
 document.addEventListener('DOMContentLoaded', initializeApp);
