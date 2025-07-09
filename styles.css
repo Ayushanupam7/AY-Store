@@ -206,9 +206,9 @@ body.dark .suggestion-box p:hover {
   }
 
   .actions input {
-    width: 80%;
+    width: 100%;
     min-width: unset;
-    max-width: 400px;
+    max-width: 500px;
   }
 
   #darkModeToggle {
@@ -236,7 +236,7 @@ body.dark .suggestion-box p:hover {
   .actions {
     justify-content: center;
   }
-}
+  
 
 /* ===================================================
    🧭 Categories
