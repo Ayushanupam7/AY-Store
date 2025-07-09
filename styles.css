@@ -198,6 +198,45 @@ body.dark .suggestion-box p:hover {
   margin-right: 10px;
   border-radius: 4px;
 }
+@media (max-width: 768px) {
+  .actions {
+    width: 100%;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .actions input {
+    width: 80%;
+    min-width: unset;
+    max-width: 400px;
+  }
+
+  #darkModeToggle {
+    padding: 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .suggestion-box {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 400px;
+  }
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end; /* default */
+  gap: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .actions {
+    justify-content: center;
+  }
+}
 
 /* ===================================================
    🧭 Categories
