@@ -6,6 +6,7 @@
  * - App name, category, download link
  * - Icon path, rating, description
  * - User comments array
+ * - Additional details for app details modal
  */
 const apps = [
   {
@@ -14,8 +15,17 @@ const apps = [
     link: "uploads/ChronoTrackPro.exe",
     icon: "uploads/icons/chrono.png",
     rating: 4.5,
-    description: "A powerful time tracking tool for project management.",
-    comments: ["Super fast!", "Clean UI."]
+    description: "A powerful time tracking tool for project management with advanced analytics and reporting features. Perfect for teams and individual professionals.",
+    comments: ["Super fast!", "Clean UI."],
+    screenshots: [
+      "uploads/screenshots/chrono1.jpg",
+      "uploads/screenshots/chrono2.jpg"
+    ],
+    developer: "AY Studios",
+    version: "2.1.4",
+    size: "45 MB",
+    updated: "2023-11-15",
+    downloads: 1250
   },
   {
     name: "Mini Web Portfolio",
@@ -23,13 +33,117 @@ const apps = [
     link: "https://ayushanupamportfolio.netlify.app/",
     icon: "uploads/icons/web.png",
     rating: 4.2,
-    description: "A simple personal portfolio template for developers.",
-    comments: []
+    description: "A simple personal portfolio template for developers with customizable sections and responsive design.",
+    comments: [],
+    screenshots: [
+      "uploads/screenshots/portfolio1.jpg",
+      "uploads/screenshots/portfolio2.jpg"
+    ],
+    developer: "WebTools Inc.",
+    version: "1.0.3",
+    size: "8 MB",
+    updated: "2023-10-28",
+    downloads: 890
+  },
+  {
+    name: "PixelArt Studio",
+    category: "Games",
+    link: "uploads/PixelArtStudio.exe",
+    icon: "uploads/icons/pixelart.png",
+    rating: 4.8,
+    description: "Create beautiful pixel art with this intuitive studio app. Includes animation tools and palette customization.",
+    comments: ["Love the brushes!", "Great for beginners"],
+    screenshots: [
+      "uploads/screenshots/pixelart1.jpg",
+      "uploads/screenshots/pixelart2.jpg",
+      "uploads/screenshots/pixelart3.jpg"
+    ],
+    developer: "GameDev Studios",
+    version: "3.2.0",
+    size: "120 MB",
+    updated: "2023-11-10",
+    downloads: 3200
   }
 ];
 
 // Pre-sort trending apps by rating (descending) for immediate display
 let trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
+
+// ==============================
+// 📱 APP DETAILS MODAL FUNCTIONS
+// ==============================
+
+let currentAppDetails = null;
+
+/**
+ * Opens app details modal
+ * @param {string} appName - Name of app to show details for
+ */
+function openAppDetailsModal(appName) {
+  const app = apps.find(a => a.name === appName);
+  if (!app) return;
+  
+  currentAppDetails = app;
+
+  // Set basic info
+  document.getElementById("detailAppName").textContent = app.name;
+  document.getElementById("detailAppIcon").src = app.icon;
+  document.getElementById("detailAppDescription").textContent = app.description;
+  document.getElementById("detailAppCategory").textContent = app.category;
+  document.getElementById("detailAppSize").textContent = app.size;
+  document.getElementById("detailAppVersion").textContent = `v${app.version}`;
+  document.getElementById("detailAppDeveloper").textContent = app.developer;
+  document.getElementById("detailAppUpdated").textContent = new Date(app.updated).toLocaleDateString();
+
+  // Set rating stars
+  const ratingContainer = document.getElementById("detailAppRating");
+  ratingContainer.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const star = document.createElement("span");
+    star.textContent = i <= Math.floor(app.rating) ? "★" : "☆";
+    ratingContainer.appendChild(star);
+  }
+
+  // Set screenshots
+  const screenshotsContainer = document.getElementById("appScreenshots");
+  screenshotsContainer.innerHTML = '';
+  app.screenshots?.forEach(screenshot => {
+    const img = document.createElement("img");
+    img.src = screenshot;
+    img.alt = `${app.name} screenshot`;
+    img.loading = "lazy";
+    screenshotsContainer.appendChild(img);
+  });
+
+  // Set download button
+  const downloadBtn = document.getElementById("detailDownloadBtn");
+  if (isDownloadable(app.link)) {
+    downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
+    downloadBtn.onclick = () => {
+      downloadApp(app.link);
+      app.downloads++;
+      downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
+    };
+  } else {
+    downloadBtn.textContent = "Visit Site";
+    downloadBtn.onclick = () => window.open(app.link, '_blank');
+  }
+
+  // Show modal
+  document.getElementById("appDetailsModal").style.display = "flex";
+}
+
+function closeAppDetailsModal() {
+  document.getElementById("appDetailsModal").style.display = "none";
+  currentAppDetails = null;
+}
+
+function openReviewModalFromDetails() {
+  closeAppDetailsModal();
+  if (currentAppDetails) {
+    openReviewModal(currentAppDetails.name);
+  }
+}
 
 // ==============================
 // 🖥️ UI RENDERING COMPONENTS
@@ -46,6 +160,12 @@ function renderApps(filteredApps = apps) {
   filteredApps.forEach(app => {
     const card = document.createElement("div");
     card.className = "app-card";
+    card.onclick = (e) => {
+      // Don't open details if clicking on a button
+      if (!e.target.closest('button, a')) {
+        openAppDetailsModal(app.name);
+      }
+    };
     
     // Determine if the app is downloadable or external link
     const isDownload = isDownloadable(app.link);
@@ -86,6 +206,7 @@ function renderTrendingApps() {
   trendingApps.forEach((app, index) => {
     const card = document.createElement("div");
     card.className = "app-card trending-card";
+    card.onclick = () => openAppDetailsModal(app.name);
     
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
@@ -159,14 +280,14 @@ function downloadApp(link) {
   document.body.removeChild(a);
 }
 
-// // ==============================
-// # 🔍 SEARCH & FILTERING
-// # ==============================
+// ==============================
+// 🔍 SEARCH & FILTERING
+// ==============================
 
-// /**
-//  * Filters apps by category and re-renders grid
-//  * @param {string} category - Category to filter by ("All" shows all apps)
-//  */
+/**
+ * Filters apps by category and re-renders grid
+ * @param {string} category - Category to filter by ("All" shows all apps)
+ */
 function filterApps(category) {
   if (category === "All") return renderApps();
   const filtered = apps.filter(app => app.category === category);
@@ -179,27 +300,28 @@ document.getElementById("searchBar").addEventListener("input",
     const val = this.value.toLowerCase();
     const filtered = apps.filter(app => 
       app.name.toLowerCase().includes(val) || 
-      app.description.toLowerCase().includes(val)
+      app.description.toLowerCase().includes(val) ||
+      app.category.toLowerCase().includes(val)
     );
     renderApps(filtered);
   }, 300)
 );
 
-// // ==============================
-// # 🌙 DARK MODE HANDLING
-// # ==============================
+// ==============================
+// 🌙 DARK MODE HANDLING
+// ==============================
 
-// /**
-//  * Toggles dark mode and persists preference in localStorage
-//  */
+/**
+ * Toggles dark mode and persists preference in localStorage
+ */
 function toggleDarkMode() {
   document.body.classList.toggle("dark");
   localStorage.setItem('darkMode', document.body.classList.contains('dark'));
 }
 
-// // ==============================
-// # 💬 REVIEW SYSTEM
-// # ==============================
+// ==============================
+// 💬 REVIEW SYSTEM
+// ==============================
 
 let currentApp = null; // Currently selected app for reviews
 
@@ -313,15 +435,16 @@ function closeReviewModal() {
   document.getElementById("reviewModal").style.display = "none";
 }
 
-//  ==============================
-// # 🖼️ BANNER SLIDER SYSTEM
-// # ==============================
+// ==============================
+// 🖼️ BANNER SLIDER SYSTEM
+// ==============================
 
 const banners = [
   {
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
-    
+    text: "New Release",
+    description: "Check out our latest productivity tools"
   },
   {
     image: "uploads/banners/banner2.jpg",
@@ -332,8 +455,8 @@ const banners = [
   {
     image: "uploads/banners/banner3.jpg",
     link: "#trendingGrid",
-    text: "Trending Apps",
-    description: "Check out what's popular this week"
+    text: "Special Offers",
+    description: "Limited time discounts available"
   }
 ];
 
@@ -391,13 +514,13 @@ function resetBannerInterval() {
   bannerInterval = setInterval(nextBanner, 5000);
 }
 
-// // ==============================
-// # 🚀 INITIALIZATION
-// # ==============================
+// ==============================
+// 🚀 INITIALIZATION
+// ==============================
 
-
-//  * Main initialization function when DOM is loaded
-//  *
+/**
+ * Main initialization function when DOM is loaded
+ */
 document.addEventListener('DOMContentLoaded', () => {
   // Restore dark mode preference
   if (localStorage.getItem('darkMode') === 'true') {

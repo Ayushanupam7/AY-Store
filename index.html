@@ -70,6 +70,49 @@
         </div>
     </div>
 
+    <!-- App Details Modal -->
+    <div id="appDetailsModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content app-details-content">
+            <button class="close" onclick="closeAppDetailsModal()">×</button>
+            <div class="app-details-header">
+                <img id="detailAppIcon" class="detail-app-icon" src="" alt="App Icon">
+                <div class="app-header-info">
+                    <h2 id="detailAppName"></h2>
+                    <div id="detailAppRating" class="detail-rating"></div>
+                    <div class="app-meta">
+                        <span id="detailAppCategory"></span>
+                        <span id="detailAppSize"></span>
+                        <span id="detailAppVersion"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="app-screenshots" id="appScreenshots"></div>
+            
+            <div class="app-details-body">
+                <div class="detail-section">
+                    <h3>Description</h3>
+                    <p id="detailAppDescription"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Developer</h3>
+                    <p id="detailAppDeveloper"></p>
+                </div>
+                
+                <div class="detail-section">
+                    <h3>Last Updated</h3>
+                    <p id="detailAppUpdated"></p>
+                </div>
+            </div>
+            
+            <div class="app-details-footer">
+                <button id="detailDownloadBtn" class="download-btn">Download</button>
+                <button onclick="openReviewModalFromDetails()" class="review-btn">Write Review</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer>
         <div class="footer-container">
