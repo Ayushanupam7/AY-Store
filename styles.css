@@ -479,7 +479,7 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
 .trending-grid {
   display: flex;
   gap: 20px;
-  padding: 0 10px;
+  padding: 10px 10px;
   min-width: max-content;
 }
 .trending-card {
