@@ -237,7 +237,7 @@ body.dark .suggestion-box p:hover {
     justify-content: center;
   }
   
-
+}
 /* ===================================================
    🧭 Categories
 =================================================== */
@@ -872,4 +872,3 @@ footer {
   .download-btn, .review-btn { width: 100%; }
   .app-screenshots img { height: 150px; }
 }
-
