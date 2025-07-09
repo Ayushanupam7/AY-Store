@@ -10,7 +10,10 @@ const defaultApps = [
     rating: 4.5,
     description: "A powerful time tracking tool for project management with advanced analytics and reporting features.",
     comments: ["Super fast!", "Clean UI."],
-    screenshots: ["uploads/screenshots/chrono1.jpg", "uploads/screenshots/chrono2.jpg"],
+    screenshots: [
+      "uploads/screenshots/chrono1.jpg",
+      "uploads/screenshots/chrono2.jpg"
+    ],
     developer: "AY Studios",
     version: "2.1.4",
     size: "45 MB",
@@ -25,7 +28,13 @@ const defaultApps = [
     rating: 4.2,
     description: "A simple personal portfolio template for developers.",
     comments: [],
-    screenshots: ["uploads/screenshots/portfolio1.jpg", "uploads/screenshots/portfolio2.jpg"],
+    screenshots: [
+      "uploads/screenshots/portfolio1.jpg",
+      "uploads/screenshots/portfolio2.jpg",
+      "uploads/screenshots/portfolio3.jpg",
+      
+      
+    ],
     developer: "WebTools Inc.",
     version: "1.0.3",
     size: "8 MB",
@@ -54,7 +63,8 @@ function loadAppDetailsPage() {
   const apps = JSON.parse(localStorage.getItem('allApps') || '[]');
   const app = apps.find(a => a.name === appName);
   if (!app) return;
-document.getElementById("detailAppName").textContent = app.name;
+  
+  document.getElementById("detailAppName").textContent = app.name;
   document.getElementById("detailAppIcon").src = app.icon;
   document.getElementById("detailAppDescription").textContent = app.description;
   document.getElementById("detailAppCategory").textContent = app.category;
@@ -64,24 +74,33 @@ document.getElementById("detailAppName").textContent = app.name;
   document.getElementById("detailAppUpdated").textContent = new Date(app.updated).toLocaleDateString();
   document.getElementById("detailAppDownloads").textContent = `${app.downloads.toLocaleString()}+ downloads`;
 
+  // Render rating stars
   const ratingContainer = document.getElementById("detailAppRating");
   ratingContainer.innerHTML = '';
   for (let i = 1; i <= 5; i++) {
     const star = document.createElement("span");
     star.textContent = i <= Math.floor(app.rating) ? "★" : "☆";
+    star.style.color = i <= app.rating ? "gold" : "#ccc";
     ratingContainer.appendChild(star);
   }
 
+  // Render screenshots with error handling
   const screenshotsContainer = document.getElementById("appScreenshots");
   screenshotsContainer.innerHTML = '';
+  
   app.screenshots?.forEach(screenshot => {
     const img = document.createElement("img");
     img.src = screenshot;
     img.alt = `${app.name} screenshot`;
     img.loading = "lazy";
+    img.onerror = function() {
+      console.error("Failed to load screenshot:", screenshot);
+      this.style.display = "none";
+    };
     screenshotsContainer.appendChild(img);
   });
 
+  // Set up download/visit button
   const downloadBtn = document.getElementById("detailDownloadBtn");
   if (isDownloadable(app.link)) {
     downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
@@ -239,6 +258,7 @@ function selectSuggestion(appName) {
   document.getElementById("searchSuggestions").style.display = "none";
   openAppDetailsPage(appName);
 }
+
 function filterApps(category) {
   if (category === "All") return renderApps();
   const filtered = apps.filter(app => app.category === category);
@@ -255,18 +275,6 @@ function toggleDarkMode() {
   const toggleBtn = document.getElementById("darkModeToggle");
   toggleBtn.textContent = isDark ? "☀️" : "🌙";
 }
-function initializeApp() {
-  const isDark = localStorage.getItem('darkMode') === 'true';
-  if (isDark) {
-    document.body.classList.add('dark');
-    document.getElementById("darkModeToggle").textContent = "☀️";
-  } else {
-    document.getElementById("darkModeToggle").textContent = "🌙";
-  }
-
-
-}
-
 
 // ==============================
 // 💬 REVIEW SYSTEM
@@ -312,7 +320,7 @@ function setReviewRating(rating) {
   trendingApps = [...apps].sort((a, b) => b.rating - a.rating);
   renderApps();
   renderTrendingApps();
-  renderRatingStars(rating); // Refresh stars after update
+  renderRatingStars(rating);
 }
 
 function submitComment() {
@@ -406,7 +414,7 @@ function addBannerSwipeSupport() {
   banner.addEventListener("touchmove", e => {
     const moveX = e.touches[0].clientX;
     const diffX = moveX - startX;
-    bannerImage.style.transform = `translateX(${diffX * 0.2}px)`; // shift banner
+    bannerImage.style.transform = `translateX(${diffX * 0.2}px)`;
   });
 
   banner.addEventListener("touchend", e => {
@@ -421,16 +429,15 @@ function addBannerSwipeSupport() {
 
     if (Math.abs(diffX) > 50) {
       if (diffX > 0) {
-        nextBanner(); // swipe left
+        nextBanner();
       } else {
         currentBanner = (currentBanner - 1 + banners.length) % banners.length;
-        showBanner(currentBanner); // swipe right
+        showBanner(currentBanner);
       }
     }
   });
 }
 
-// Call these during DOMContentLoaded or in initializeApp()
 function initBannerSlider() {
   showBanner(currentBanner);
   resetBannerInterval();
@@ -441,36 +448,34 @@ function initBannerSlider() {
   banner.addEventListener('mouseleave', resetBannerInterval);
 }
 
-
 // ==============================
 // 🚀 INITIALIZATION
 // ==============================
 function initializeApp() {
+  // Set up dark mode
   if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark');
+    document.getElementById("darkModeToggle").textContent = "☀️";
   }
 
+  // Check if we're on the app details page
   if (window.location.pathname.includes('app-details.html')) {
     loadAppDetailsPage();
     return;
   }
 
+  // Initialize main page components
   renderApps();
   renderTrendingApps();
-  showBanner(currentBanner);
-  resetBannerInterval();
+  initBannerSlider();
 
-  
-
+  // Check for review modal request
   const urlParams = new URLSearchParams(window.location.search);
   const reviewApp = urlParams.get('review');
   if (reviewApp) {
     openReviewModal(reviewApp);
   }
 }
-document.addEventListener('DOMContentLoaded', () => {
-  initializeApp();
-  addBannerSwipeSupport(); // 👈 Enable swipe on mobile
-});
 
+// Start the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', initializeApp);
