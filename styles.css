@@ -614,7 +614,8 @@ body.dark .screenshot-nav-dots span.active {
 }
 
 .app-details-footer button:hover {
-  background: #3700b3;
+  background: #08bfcc;
+  color: white;
 }
 
 /* Dark mode */
@@ -629,7 +630,8 @@ body.dark .app-details-footer button {
 }
 
 body.dark .app-details-footer button:hover {
-  background: #9f6dff;
+  background: #098a25;
+  color: white;
 }
 
 .app-details-container {
@@ -821,9 +823,11 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
   ;
 }
 
-.buttons button:hover,
-.visit-btn:hover {
-  background: #3700b3;
+.buttons button:hover{
+  background: #019114;
+}
+.visit-btn:hover{
+  background-color: #ff0000;
 }
 
 /* Dark mode styles */
@@ -835,7 +839,8 @@ body.dark .visit-btn {
 
 body.dark .buttons button:hover,
 body.dark .visit-btn:hover {
-  background: #9f6dff;
+  background: #05be14b7;
+  color: white;
 }
 
 .trending-rank {
@@ -1024,45 +1029,325 @@ body.dark .detail-section h3 {
   gap: 0.5rem;
 }
 
-/* ===================================================
-   📞 Footer
-=================================================== */
+/* Enhanced Footer Styles */
 footer {
-  background: #282828;
+  background: linear-gradient(135deg, #2c3e50, #4a6491);
   color: #fff;
-  padding: 2rem 1rem 1rem;
-  margin-top: 2rem;
-}
-.footer-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 2rem;
-}
-.footer-column h4, .footer-column h3 {
-  margin-bottom: 0.6rem;
-}
-.footer-column ul {
-  list-style: none;
-  padding: 0;
-}
-.footer-column ul li {
-  margin-bottom: 0.4rem;
-}
-.footer-column ul li a {
-  color: #ccc;
-  text-decoration: none;
-}
-.footer-column ul li a:hover {
-  text-decoration: underline;
-}
-.footer-bottom {
-  text-align: center;
-  margin-top: 1.5rem;
-  font-size: 0.9rem;
-  color: #aaa;
+  padding: 2rem 1rem 0;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.footer-column {
+  padding: 0 0.5rem;
+}
+
+/* Mobile First - Hide desktop elements */
+.desktop-only {
+  display: none;
+}
+
+/* Brand Info Column */
+.brand-info .logo-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.footer-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+
+.brand-info h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.3rem;
+}
+
+.footer-description {
+  line-height: 1.5;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* App Badges - Mobile Only */
+.app-badges.mobile-only {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.app-badge img {
+  height: 40px;
+  border-radius: 5px;
+}
+
+/* Contact Info Column */
+.contact-info h4,
+.social-contact h5 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.contact-details p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+}
+
+.contact-details i {
+  margin-right: 10px;
+  color: #bb86fc;
+  width: 20px;
+  text-align: center;
+}
+
+/* Social Icons */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.animated-heading{
+  align-items: center;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  transform: translateY(-3px);
+  background: #6200ea;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+  background: rgba(0,0,0,0.2);
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+}
+
+.footer-legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-legal p {
+  margin-bottom: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+}
+
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.legal-links a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.3s;
+}
+
+.legal-links a:hover {
+  color: #fff;
+}
+.animated-link{
+  color: rgb(212, 205, 205);
+  text-decoration: none;
+}
+
+/* Desktop Styles (768px and up) */
+@media (min-width: 768px) {
+  footer {
+    padding: 3rem 1rem 0;
+  }
+
+  .footer-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    gap: 2rem;
+  }
+
+  .footer-column {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  /* Show desktop elements */
+  .desktop-only {
+    display: block;
+  }
+
+  /* Hide mobile app badges on desktop */
+  .app-badges.mobile-only {
+    display: none;
+  }
+
+  /* Quick Links & Support Columns */
+  .footer-column ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-column ul li {
+    margin-bottom: 0.8rem;
+  }
+
+  .footer-column ul li a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-column ul li a:hover {
+    color: #fff;
+  }
+
+  .footer-column ul li i {
+    margin-right: 8px;
+    font-size: 0.8rem;
+    color: #bb86fc;
+  }
+
+  /* Larger text on desktop */
+  .footer-description,
+  .contact-details p {
+    font-size: 1rem;
+  }
+
+  .footer-legal p,
+  .legal-links a {
+    font-size: 0.9rem;
+  }
+}
+
+/* Dark Mode Support */
+body.dark footer {
+  background: linear-gradient(135deg, #121212, #1a1a2e);
+}
+
+body.dark .social-icons a:hover {
+  background: #bb86fc;
+}
+/* Text Hover Animations */
+.footer-column ul li a,
+.legal-links a,
+.contact-details a,
+.footer-description,
+.footer-legal p {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Underline animation for links */
+.footer-column ul li a:after,
+.legal-links a:after,
+.contact-details a:after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 1px;
+  bottom: -2px;
+  left: 0;
+  background-color: #bb86fc;
+  transition: width 0.3s ease;
+}
+
+.footer-column ul li a:hover:after,
+.legal-links a:hover:after,
+.contact-details a:hover:after {
+  width: 100%;
+}
+
+/* Bounce animation for social icons */
+.social-icons a {
+  animation: float 3s ease-in-out infinite;
+}
+
+.social-icons a:hover {
+  animation: bounce 0.5s ease;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+/* Fade-in animation for description */
+.footer-description {
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.footer-description:hover {
+  opacity: 1;
+  color: rgb(224, 241, 128);
+}
+
+/* Pulse animation for copyright text */
+.footer-legal p {
+  animation: pulse 6s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Gradient animation for headings */
+.footer-column h3,
+.footer-column h4,
+.footer-column h5 {
+  background: linear-gradient(90deg, #fff, #bb86fc);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background-position 0.5s ease;
+}
+
+.footer-column h3:hover,
+.footer-column h4:hover,
+.footer-column h5:hover {
+  background-position: right center;
+}
 /* ===================================================
    📱 Responsive Layouts
 =================================================== */
