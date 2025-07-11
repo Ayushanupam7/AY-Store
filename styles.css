@@ -1031,7 +1031,7 @@ body.dark .detail-section h3 {
 
 /* Enhanced Footer Styles */
 footer {
-  background: linear-gradient(135deg, #2c3e50, #4a6491);
+  background: linear-gradient(90deg, #000000f8, #7340fd);
   color: #fff;
   padding: 2rem 1rem 0;
   font-family: 'Segoe UI', sans-serif;
