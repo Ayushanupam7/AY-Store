@@ -198,6 +198,50 @@ body.dark .suggestion-box p:hover {
   margin-right: 10px;
   border-radius: 4px;
 }
+/* Dark Mode Toggle with Tooltip - Bottom Position */
+.thememode {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.thememode:hover {
+  transform: scale(1.1);
+}
+
+.thememode::after {
+  content: 'Switch Light/Dark Mode';
+  position: absolute;
+  top: 100%; /* Changed from bottom: 100% */
+  left: 50%;
+  transform: translateX(-80%); /* Center horizontally */
+  margin-top: 10px; /* Space between button and tooltip */
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  font-family: 'Segoe UI', sans-serif;
+  z-index: 1000; /* Ensure it appears above other elements */
+  min-width: max-content; /* Prevent text wrapping */
+}
+
+.thememode:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Dark mode styles */
+body.dark .thememode::after {
+  background: rgba(255, 255, 255, 0.9);
+  color: #121212;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2); /* Add shadow in dark mode */
+}
 
 @media (max-width: 768px) {
   .actions {
@@ -977,7 +1021,6 @@ footer {
   margin-top: 2rem;
 }
 .footer-container {
-  
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
