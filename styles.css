@@ -32,6 +32,7 @@ body {
   background: #f9f9f9;
   color: #333;
   transition: background 0.3s, color 0.3s;
+  padding-bottom: 0px;
 }
 body.dark {
   background: #121212;
@@ -744,15 +745,40 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
   font-size: 1.2rem;
   margin: 0;
 }
-.trending-card .buttons {
-  margin-top: 0.5rem;
-  width: 100%;
+
+/* Unified button styles */
+.buttons button,
+.visit-btn {
+  background: #6200ea;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  font: inherit;
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px;
+  ;
 }
-.trending-card .buttons button,
-.trending-card .buttons .visit-btn {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 0.9rem;
+
+.buttons button:hover,
+.visit-btn:hover {
+  background: #3700b3;
+}
+
+/* Dark mode styles */
+body.dark .buttons button,
+body.dark .visit-btn {
+  background: #bb86fc;
+  color: #000;
+}
+
+body.dark .buttons button:hover,
+body.dark .visit-btn:hover {
+  background: #9f6dff;
 }
 
 .trending-rank {
@@ -769,31 +795,6 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
 body.dark .trending-card {
   background: #222;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
-}
-
-
-.buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 0.5rem;
-}
-.buttons button, .visit-btn {
-  background: #6200ea;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 6px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.visit-btn:hover{
-   background: #04b9d1;
-}
-.buttons button:hover {
-  background: #02883e;
 }
 
 /* ===================================================
@@ -1017,7 +1018,7 @@ footer {
 @media (max-width: 480px) {
   .banner-container { height: 180px; margin-top: 130px; }
   .banner-text, .banner-text h2, .banner-text p, .banner-text a { display: none; }
-  .buttons button { flex: 1; }
+  .buttons button { flex: 1;width: 100%; }
   .footer-container { flex-direction: column; text-align: center; }
   .app-details-footer { flex-direction: column; }
   .download-btn, .review-btn { width: 100%; }

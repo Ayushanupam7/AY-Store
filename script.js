@@ -26,14 +26,12 @@ const defaultApps = [
     link: "https://ayushanupamportfolio.netlify.app/",
     icon: "uploads/icons/web.png",
     rating: 4.2,
-    description: "A simple personal portfolio template for developers.",
+    description: "A powerful time tracking tool for project management with advanced analytics and reporting features.",
     comments: [],
     screenshots: [
       "uploads/screenshots/portfolio1.jpg",
       "uploads/screenshots/portfolio2.jpg",
       "uploads/screenshots/portfolio3.jpg",
-      
-      
     ],
     developer: "WebTools Inc.",
     version: "1.0.3",
@@ -105,9 +103,11 @@ function loadAppDetailsPage() {
   if (isDownloadable(app.link)) {
     downloadBtn.textContent = `Download (${app.downloads.toLocaleString()}+)`;
     downloadBtn.onclick = () => downloadApp(app.link, app.name);
+    downloadBtn.classList.remove('visit-btn');
   } else {
     downloadBtn.textContent = "Visit Site";
     downloadBtn.onclick = () => window.open(app.link, '_blank');
+    downloadBtn.classList.add('visit-btn');
   }
 
   document.getElementById("detailReviewBtn").onclick = () => {
@@ -130,7 +130,7 @@ function renderApps(filteredApps = apps) {
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
       ? `<button onclick="event.stopPropagation();downloadApp('${app.link}','${app.name}')">Download</button>`
-      : `<a href="${app.link}" class="visit-btn" target="_blank" onclick="event.stopPropagation()">Visit Site</a>`;
+      : `<button onclick="event.stopPropagation();window.open('${app.link}','_blank')">Visit Site</button>`;
 
     card.innerHTML = `
       <div class="card-content">
@@ -164,7 +164,7 @@ function renderTrendingApps() {
     const isDownload = isDownloadable(app.link);
     const buttonHTML = isDownload
       ? `<button onclick="event.stopPropagation();downloadApp('${app.link}','${app.name}')">Download</button>`
-      : `<a href="${app.link}" class="visit-btn" target="_blank" onclick="event.stopPropagation()">Visit Site</a>`;
+      : `<button onclick="event.stopPropagation();window.open('${app.link}','_blank')">Visit Site</button>`;
 
     card.innerHTML = `
       <div class="trending-rank">#${index + 1}</div>
