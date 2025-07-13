@@ -119,19 +119,34 @@ body.dark .logo-text {
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  border-right: 1px solid #171bd3;
   color: #ffffff;
   font-size: 1rem;
-  animation: typing 5s steps(25, end) 1s infinite alternate, blink 0.7s step-end infinite;
+  position: relative;
+  width: 0;
+  border-right: 1px solid #171bd3; /* Cursor */
+  animation: 
+    typing 3s steps(25, end) forwards,
+    blink-cursor 0.7s step-end infinite 3s,
+    reset-animation 0s 63s forwards;
 }
+
 @keyframes typing {
   0% { width: 0; }
   100% { width: 100%; }
 }
-@keyframes blink {
+
+@keyframes blink-cursor {
+  0%, 100% { border-color: #171bd3; }
   50% { border-color: transparent; }
 }
 
+@keyframes reset-animation {
+  to { 
+    width: 0;
+    /* Force re-trigger animations */
+    animation-name: typing, blink-cursor, reset-animation;
+  }
+}
 /* ===================================================
    🔍 Header Actions (Search, Dark Mode)
 =================================================== */
