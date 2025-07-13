@@ -304,7 +304,65 @@ body.dark .thememode::after {
     justify-content: center;
   }
 }
+/* Mobile Header Styles */
+@media (max-width: 768px) {
+  .custom-header {
+    padding: 0.5rem 1rem;
+    flex-wrap: nowrap; /* Prevent wrapping */
+  }
 
+  .logo-title {
+    flex: 0 0 auto; /* Don't grow or shrink */
+    min-width: 0; /* Allow shrinking below content width */
+  }
+
+  .title-group {
+    display: none; /* Hide the title and subtitle */
+  }
+
+  .logo {
+    width: 60px; /* Smaller logo on mobile */
+    height: 40px;
+  }
+
+  .actions {
+    flex: 1; /* Take remaining space */
+    min-width: 0; /* Allow shrinking */
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .search-wrapper {
+    flex: 1; /* Take available space */
+    min-width: 0; /* Allow shrinking */
+    margin-right: 0.5rem;
+  }
+
+  #searchBar {
+    width: 100%;
+    min-width: unset; /* Remove minimum width */
+    padding: 0.5rem;
+  }
+
+  #darkModeToggle {
+    flex: 0 0 auto; /* Don't grow or shrink */
+    padding: 0.5rem;
+    font-size: 1.2rem;
+  }
+}
+
+/* Extra small devices (phones, 480px and down) */
+@media (max-width: 480px) {
+  .logo {
+    width: 50px;
+    height: 35px;
+  }
+
+  #searchBar {
+    padding: 0.4rem;
+    font-size: 0.9rem;
+  }
+}
 /* ===================================================
    🧭 Categories
 =================================================== */
@@ -340,7 +398,7 @@ body.dark .thememode::after {
   touch-action: pan-y;
   position: relative;
   margin: 0 auto;
-  border-radius: 0 0 15px 15px;
+  border-radius: 0 0 20px 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.527);
 }
 .banner-container {
@@ -1365,9 +1423,10 @@ body.dark .social-icons a:hover {
   .banner-text { font-size: 0.9rem; bottom: 15px; left: 20px; }
   .app-icon { width: 60px; height: 60px; }
   .app-meta { justify-content: left; }
+  
 }
 @media (max-width: 480px) {
-  .banner-container { height: 180px; margin-top: 130px; }
+  .banner-container { height: 180px; margin-top: 20px; }
   .banner-text, .banner-text h2, .banner-text p, .banner-text a { display: none; }
   .buttons button { flex: 1;width: 100%; }
   .footer-container { flex-direction: column; text-align: center; }
