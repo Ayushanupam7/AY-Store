@@ -89,7 +89,16 @@ body.dark {
   display: flex;
   gap: 6px;
   align-items: center;
-  color: #fffcfc;
+}
+.logo-text .animated-ay {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedTextColor 5s ease infinite;
+}
+.logo-text .store-text {
+  color: white;
 }
 body.dark .logo-text {
   color: #fff;
