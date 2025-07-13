@@ -12,13 +12,18 @@ const defaultApps = [
     comments: ["Super fast!", "Clean UI."],
     screenshots: [
       "uploads/screenshots/chrono1.jpg",
-      "uploads/screenshots/chrono2.jpg"
+      "uploads/screenshots/chrono2.jpg",
+      "uploads/screenshots/chrono3.jpg",
+      "uploads/screenshots/chrono4.jpg",
+      "uploads/screenshots/chrono5.jpg",
+      "uploads/screenshots/chrono6.jpg",
+      "uploads/screenshots/chrono7.jpg",
     ],
-    developer: "AY Studios",
+    developer: "Ayush Anupam ",
     version: "2.1.4",
-    size: "45 MB",
-    updated: "2023-11-15",
-    downloads: 1250
+    size: "38.2 MB",
+    updated: "2025-04-06",
+    downloads: 100
   },
   {
     name: "Mini Web Portfolio",
@@ -30,8 +35,8 @@ const defaultApps = [
     comments: [],
     screenshots: [
       "uploads/screenshots/portfolio1.jpg",
-      "uploads/screenshots/portfolio2.jpg",
       "uploads/screenshots/portfolio3.jpg",
+      "uploads/screenshots/portfolio2.jpg",
     ],
     developer: "WebTools Inc.",
     version: "1.0.3",
