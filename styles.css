@@ -127,7 +127,8 @@ body.dark .logo-text {
   animation: 
     typing 3s steps(25, end) forwards,
     blink-cursor 0.7s step-end infinite 3s,
-    reset-animation 0s 63s forwards;
+    reset-typing 3s 60s forwards,
+    final-state 0s 63s forwards;
 }
 
 @keyframes typing {
@@ -140,11 +141,26 @@ body.dark .logo-text {
   50% { border-color: transparent; }
 }
 
-@keyframes reset-animation {
-  to { 
+@keyframes reset-typing {
+  0% {
+    width: 100%;
+    border-right: 1px solid #171bd3;
+  }
+  99% {
     width: 0;
-    /* Force re-trigger animations */
-    animation-name: typing, blink-cursor, reset-animation;
+    border-right: 1px solid #171bd3;
+  }
+  100% {
+    width: 0;
+    border-right: none;
+  }
+}
+
+@keyframes final-state {
+  to {
+    width: 100%;
+    border-right: none;
+    animation: none;
   }
 }
 /* ===================================================
