@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AY Store - Discover Amazing Apps</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
@@ -69,6 +70,26 @@
     </section>
   </main>
 
+  <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <a href="#" class="mobile-nav-item active">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#appGrid" class="mobile-nav-item">
+      <i class="fas fa-th-large"></i>
+      <span>Apps</span>
+    </a>
+    <a href="#" class="mobile-nav-item">
+      <i class="fas fa-book"></i>
+      <span>Books</span>
+    </a>
+    <a href="#" class="mobile-nav-item">
+      <i class="fas fa-comment-dots"></i>
+      <span>Chats</span>
+    </a>
+  </nav>
+
   <!-- Review Modal -->
   <div id="reviewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewAppName">
     <div class="modal-content">
@@ -78,7 +99,6 @@
       <textarea id="newComment" placeholder="Write your comment..." aria-label="Write your review"></textarea>
       <button onclick="submitComment()">Submit</button>
       <button type="button" class="close" onclick="closeReviewModal()">Close</button>
-
     </div>
   </div>
 
@@ -179,7 +199,6 @@
             <a href="#" aria-label="LinkedIn" class="animated-icon"><i class="fab fa-linkedin-in"></i></a>
             <a href="#" aria-label="Twitter" class="animated-icon"><i class="fab fa-twitter"></i></a>
             <a href="#" aria-label="GitHub" class="animated-icon"><i class="fab fa-github"></i></a>
-
           </div>
         </div>
       </div>
@@ -199,7 +218,6 @@
   </footer>
 
   <script src="script.js"></script>
- 
 </body>
 
 </html>
