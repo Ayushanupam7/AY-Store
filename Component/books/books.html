@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Books - AY Store</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="books.css">
+  <script>
+    if (localStorage.getItem("darkMode") === "true") {
+      document.documentElement.classList.add("dark");
+      document.body.classList.add("dark");
+    }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="books-header">
+    <button class="back-button" onclick="window.location.href='/index.html'">← Back</button>
+    <h2>Books</h2>
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()">🌗</button>
+  </header>
+
+  <!-- Main Content -->
+  <!-- <main class="books-content">
+    <div class="book-card">
+      <h3>📘 Introduction to AI</h3>
+      <p>Learn the basics of Artificial Intelligence and its applications.</p>
+    </div>
+    <div class="book-card">
+      <h3>📗 Web Development Guide</h3>
+      <p>Everything from HTML, CSS to modern JavaScript and frameworks.</p>
+    </div> -->
+    <!-- Add more book cards
+  </main> -->
+  <div class="coming-soon">
+    coming soon...
+  </div>
+
+  <!-- Bottom Nav -->
+   <!-- Mobile Bottom Navigation Bar -->
+  <nav class="mobile-bottom-nav">
+    <a href="/index.html" class="mobile-nav-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#appcategory" class="mobile-nav-item">
+      <i class="fas fa-th-large"></i>
+      <span>Apps</span>
+    </a>
+    <a href="/Component/books/books.html" class="mobile-nav-item active">
+      <i class="fas fa-book"></i>
+      <span>Books</span>
+    </a>
+    <a href="#" class="mobile-nav-item">
+      <i class="fas fa-comment-dots"></i>
+      <span>Chats</span>
+    </a>
+  </nav>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark");
+      document.documentElement.classList.toggle("dark");
+      localStorage.setItem("darkMode", document.body.classList.contains("dark"));
+    }
+  </script>
+  <script src="script.js"></script>
+  <script src="/theme.js"></script>
+
+</body>
+</html>
