@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         setTimeout(() => {
           window.location.href = href;
-        }, 500); // delay to show loader
+        }, 900); // delay to show loader
       });
     }
   });
