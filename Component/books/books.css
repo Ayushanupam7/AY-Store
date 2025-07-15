@@ -213,3 +213,46 @@
      height: 100vh;
 
  }
+ /* Loader Overlay */
+#pageLoader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Dark Mode */
+body.dark #pageLoader {
+  background: rgba(18, 18, 18, 0.95);
+}
+
+/* AY Gradient Text */
+.loader-ay {
+  font-size: 3.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #6200ea, #03a9f4, #f50057, #00e676);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 3s ease infinite;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Gradient Animation */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

@@ -1302,31 +1302,39 @@ body.dark .mobile-nav-item:hover {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
 }
 
-/* Dark Mode Support */
+/* Dark Mode */
 body.dark #pageLoader {
-  background: rgba(18, 18, 18, 0.9);
+  background: rgba(18, 18, 18, 0.95);
 }
 
-/* Spinner Circle */
-.spinner {
-  width: 50px;
-  height: 50px;
-  border: 5px solid #ccc;
-  border-top-color: #6200ea;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+/* AY Gradient Text */
+.loader-ay {
+  font-size: 3.5rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #6200ea, #03a9f4, #f50057, #00e676);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientFlow 3s ease infinite;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
+/* Gradient Animation */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
-
