@@ -355,18 +355,18 @@ const banners = [
     image: "uploads/banners/banner1.jpg",
     link: "https://ayushanupamportfolio.netlify.app/"
   },
-  {
-    image: "uploads/banners/banner2.jpg",
-    link: "#trendingGrid",
-    text: "Trending Apps",
-    description: "Check out what's popular this week"
-  },
-  {
-    image: "uploads/banners/banner3.jpg",
-    link: "#trendingGrid",
-    text: "Special Offers",
-    description: "Limited time discounts available"
-  }
+  // {
+  //   image: "uploads/banners/banner2.jpg",
+  //   link: "#trendingGrid",
+  //   text: "Trending Apps",
+  //   description: "Check out what's popular this week"
+  // },
+  // {
+  //   image: "uploads/banners/banner3.jpg",
+  //   link: "#trendingGrid",
+  //   text: "Special Offers",
+  //   description: "Limited time discounts available"
+  // }
 ];
 
 let currentBanner = 0;
