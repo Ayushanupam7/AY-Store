@@ -27,25 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
 // ✅ Keyboard shortcut: Ctrl + D
 document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key.toLowerCase() === "d") {
-    e.preventDefault(); // prevent bookmark shortcut in browsers
+    e.preventDefault(); // prevent bookmark shortcut
     toggleDarkMode();
   }
 });
 
-// ✅ Mobile Gesture: Quick Vertical Swipe Down (like V)
+// ✅ Mobile Gesture: Swipe down and hold for 2s
 let touchStartY = 0;
-let touchEndY = 0;
+let touchStartTime = 0;
 
 document.addEventListener("touchstart", (e) => {
   touchStartY = e.touches[0].clientY;
+  touchStartTime = Date.now();
 });
 
 document.addEventListener("touchend", (e) => {
-  touchEndY = e.changedTouches[0].clientY;
+  const touchEndY = e.changedTouches[0].clientY;
   const swipeDistance = touchEndY - touchStartY;
+  const duration = Date.now() - touchStartTime;
 
-  // Detect quick downward swipe (greater than 100px)
-  if (swipeDistance > 100) {
+  // Must swipe down more than 100px AND hold for 2 seconds (2000ms)
+  if (swipeDistance > 100 && duration >= 2000) {
     toggleDarkMode();
   }
 });
