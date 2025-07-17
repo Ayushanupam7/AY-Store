@@ -1,0 +1,61 @@
+/* ===================================================
+   🏗️ LAYOUT COMPONENTS
+   =================================================== */
+
+/* Fixed header with gradient background */
+.custom-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(90deg, #000000f8, #7340fd);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  z-index: 999;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+
+/* Logo and title grouping */
+.logo-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.logo {
+  width: 90px;
+  height: 50px;
+  object-fit: contain;
+}
+.title-group h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  font-weight: 300;
+}
+
+/* Header action buttons container */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+.actions input {
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: none;
+  min-width: 200px;
+}
+.actions input:focus {
+  outline: 2px solid #03dac5;
+}

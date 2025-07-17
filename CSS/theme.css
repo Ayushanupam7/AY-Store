@@ -1,0 +1,166 @@
+/* ===================================================
+   🌗 THEME TOGGLE COMPONENT
+   =================================================== */
+
+/* Theme toggle button with tooltip */
+.thememode {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: black;
+  border-radius: 5px;
+}
+.thememode:hover {
+  transform: scale(1.1);
+}
+.thememode::after {
+  content: 'Switch Light/Dark Mode';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-80%);
+  margin-top: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  z-index: 1000;
+  min-width: max-content;
+}
+
+/* ===================================================
+   🌗 DARK MODE OVERRIDES
+   =================================================== */
+
+body.dark {
+  /* Dark mode body styles */
+  background: #121212;
+  color: #f1f1f1;
+}
+
+/* Dark mode search suggestions */
+body.dark .suggestion-box {
+  background-color: #222;
+  color: #fff;
+  border-color: #444;
+}
+body.dark .suggestion-box p:hover {
+  background-color: #333;
+}
+
+/* Dark mode tooltip */
+body.dark .thememode::after {
+  background: rgba(255, 255, 255, 0.9);
+  color: #121212;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Dark mode scrollbar */
+body.dark .trending-wrapper::-webkit-scrollbar-track {
+  background-color: #222;
+}
+body.dark .trending-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #3333ff, #ff00cc);
+}
+
+/* Dark mode cards */
+body.dark .trending-card {
+  background: #222;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
+}
+
+/* Dark mode screenshots */
+body.dark .app-screenshots img {
+  background: #2a2a2a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark .no-screenshots {
+  color: #aaa;
+}
+
+/* Dark mode navigation dots */
+body.dark .screenshot-nav-dots span {
+  background: #555;
+}
+body.dark .screenshot-nav-dots span.active {
+  background: #bb86fc;
+}
+
+/* Dark mode footer */
+body.dark .app-details-footer {
+  background: #1e1e1e;
+  border-color: #333;
+}
+body.dark .app-details-footer button {
+  background: #bb86fc;
+  color: #000;
+}
+body.dark .app-details-footer button:hover {
+  background: #098a25;
+  color: white;
+}
+
+body.dark .app-details-content {
+  background: #1e1e1e;
+}
+
+body.dark .app-meta span {
+  background: #333;
+  color: #ddd;
+}
+
+body.dark .detail-section h3 {
+  color: #bb86fc;
+}
+
+body.dark .modal-content {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+body.dark #commentList p {
+  background: #333;
+}
+
+body.dark .trending-section h2 {
+  color: #eee;
+}
+
+body.dark .dots span {
+  background: #888;
+}
+body.dark .dots span.active {
+  background: #fff;
+}
+
+body.dark .rating-stars span.active {
+  color: #ffd700;
+  text-shadow: 0 0 3px #ffd700;
+}
+
+body.dark .rating-stars-edit span {
+  color: #555;
+}
+body.dark .rating-stars-edit span.hovered,
+body.dark .rating-stars-edit span:hover,
+body.dark .rating-stars-edit span.selected {
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd700;
+}
+
+body.dark footer {
+  background: linear-gradient(135deg, #121212, #1a1a2e);
+}
+body.dark .social-icons a:hover {
+  background: #bb86fc;
+}

@@ -1,0 +1,132 @@
+/* ===================================================
+   🦶 MAIN FOOTER
+   =================================================== */
+
+/* Main footer styling */
+footer {
+  background: linear-gradient(90deg, #000000f8, #7340fd);
+  color: #fff;
+  padding: 2rem 1rem 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+.footer-column {
+  padding: 0 0.5rem;
+}
+
+/* Brand information section */
+.brand-info .logo-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.footer-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}
+.brand-info h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.3rem;
+}
+.footer-description {
+  line-height: 1.5;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+/* App store badges */
+.app-badges.mobile-only {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.app-badge img {
+  height: 40px;
+  border-radius: 5px;
+}
+
+/* Contact information */
+.contact-info h4,
+.social-contact h5 {
+  color: #fff;
+  margin-bottom: 1rem;
+}
+.contact-details p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.8rem;
+  color: rgba(255,255,255,0.8);
+  font-size: 0.9rem;
+}
+.contact-details i {
+  margin-right: 10px;
+  color: #bb86fc;
+  width: 20px;
+  text-align: center;
+}
+
+/* Social media icons */
+.social-icons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.social-icons a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+.social-icons a:hover {
+  transform: translateY(-3px);
+  background: #6200ea;
+}
+
+/* Footer bottom section */
+.footer-bottom {
+  background: rgba(0,0,0,0.2);
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+}
+.footer-legal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer-legal p {
+  margin-bottom: 1rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.8rem;
+}
+.legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.legal-links a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.3s;
+}
+.legal-links a:hover {
+  color: #fff;
+}

@@ -1,0 +1,85 @@
+/* ===================================================
+   🔥 TRENDING SECTION
+   =================================================== */
+
+.trending-section {
+  padding: 2rem 1rem;
+  position: relative;
+}
+.trending-section h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+/* Horizontal scrolling container */
+.trending-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+.trending-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+.trending-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  border-radius: 10px;
+}
+.trending-wrapper::-webkit-scrollbar-track {
+  background-color: #eee;
+  border-radius: 10px;
+}
+
+/* Trending card grid */
+.trending-grid {
+  display: flex;
+  gap: 20px;
+  padding: 10px 10px;
+  min-width: max-content;
+}
+.trending-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  min-width: 200px;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+.trending-card:hover {
+  transform: scale(1.02);
+  border-radius: 16px;
+  animation: glowBorder 1.5s infinite;
+}
+.trending-card .card-content.minimal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+}
+.trending-card .app-icon {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 0.5rem;
+}
+.trending-card h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+/* Ranking badge */
+.trending-rank {
+  font-weight: bold;
+  background: #fd4040;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}

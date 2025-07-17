@@ -66,7 +66,7 @@ function loadAppDetailsPage() {
   const apps = JSON.parse(localStorage.getItem('allApps') || '[]');
   const app = apps.find(a => a.name === appName);
   if (!app) return;
-  
+
   document.getElementById("detailAppName").textContent = app.name;
   document.getElementById("detailAppIcon").src = app.icon;
   document.getElementById("detailAppDescription").textContent = app.description;
@@ -90,7 +90,6 @@ function loadAppDetailsPage() {
   // Render screenshots with error handling
   const screenshotsContainer = document.getElementById("appScreenshots");
   screenshotsContainer.innerHTML = '';
-  
   app.screenshots?.forEach(screenshot => {
     const img = document.createElement("img");
     img.src = screenshot;
@@ -347,26 +346,28 @@ function closeReviewModal() {
   document.getElementById("reviewModal").style.display = "none";
 }
 
-// ==============================
-// 🖼️ BANNER SLIDER SYSTEM
-// ==============================
 const banners = [
+  
   {
-    image: "uploads/banners/banner1.jpg",
-    link: "https://ayushanupamportfolio.netlify.app/"
+    imageDesktop: "uploads/banners/banner1.jpg",
+    imageMobile: "uploads/banners/banner1.jpg",
+    link: "https://ayushanupamportfolio.netlify.app/",
+    // text: "My Portfolio",
+    // description: "Explore my work and skills"
+  },{
+    videoDesktop: "uploads/banners/banner1.mp4",
+    
+    link: "https://ayushanupamportfolio.netlify.app/",
+    // text: "My Portfolio",
+    // description: "Explore my work and skills"
   },
   {
-    image: "uploads/banners/banner4.jpg",
+    imageDesktop: "uploads/banners/scanner.jpg",
+    imageMobile: "uploads/banners/banner2M.jpg",
     link: "#trendingGrid",
-    text: "",
-    description: ""
-  },
-  // {
-  //   image: "uploads/banners/banner3.jpg",
-  //   link: "#trendingGrid",
-  //   text: "Special Offers",
-  //   description: "Limited time discounts available"
-  // }
+    // text: "Trending Now",
+    // description: "Check the latest updates"
+  }
 ];
 
 let currentBanner = 0;
@@ -374,14 +375,25 @@ let bannerInterval;
 
 function showBanner(index) {
   const banner = banners[index];
-  const nextIndex = (index + 1) % banners.length;
+  const isMobile = window.innerWidth <= 768;
 
-  // Preload next image
-  const preload = new Image();
-  preload.src = banners[nextIndex].image;
+  const imageSrc = isMobile ? banner.imageMobile : banner.imageDesktop;
+  const videoSrc = isMobile ? banner.videoMobile : banner.videoDesktop;
 
   const bannerImg = document.getElementById("bannerImage");
-  bannerImg.src = banner.image;
+  const bannerVideo = document.getElementById("bannerVideo");
+
+  if (videoSrc) {
+    bannerImg.style.display = "none";
+    bannerVideo.style.display = "block";
+    bannerVideo.src = videoSrc;
+    bannerVideo.load();
+  } else if (imageSrc) {
+    bannerVideo.style.display = "none";
+    bannerImg.style.display = "block";
+    bannerImg.src = imageSrc;
+  }
+
   document.getElementById("bannerText").textContent = banner.text || "";
   document.getElementById("bannerDesc").textContent = banner.description || "";
   document.getElementById("bannerLinkWrapper").href = banner.link;
@@ -452,12 +464,11 @@ function initBannerSlider() {
   banner.addEventListener('mouseenter', () => clearInterval(bannerInterval));
   banner.addEventListener('mouseleave', resetBannerInterval);
 }
-
 // ==============================
 // 🚀 INITIALIZATION
 // ==============================
 function initializeApp() {
-  // Set up dark mode
+  // Dark-mode
   if (localStorage.getItem('darkMode') === 'true') {
     document.body.classList.add('dark');
     document.getElementById("darkModeToggle").textContent = "☀️";

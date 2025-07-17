@@ -1,0 +1,51 @@
+/* ===================================================
+   ⭐ RATING COMPONENTS
+   =================================================== */
+
+/* Static rating display */
+.rating-stars {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 10px 0;
+  color: #ccc;
+  cursor: pointer;
+}
+.rating-stars span {
+  transition: transform 0.2s ease, color 0.3s ease, text-shadow 0.3s ease;
+}
+.rating-stars span:hover {
+  transform: scale(1.2);
+  color: gold;
+  text-shadow: 0 0 5px gold, 0 0 10px gold;
+}
+.rating-stars span.active {
+  color: gold;
+  text-shadow: 0 0 3px gold;
+  animation: pulseStar 1s infinite ease-in-out;
+}
+
+/* Editable rating input */
+.rating-stars-edit {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 10px 0;
+  cursor: pointer;
+}
+.rating-stars-edit span {
+  transition: transform 0.2s, color 0.3s, text-shadow 0.3s;
+  color: #bbb;
+}
+.rating-stars-edit span.hovered,
+.rating-stars-edit span:hover {
+  color: gold;
+  transform: scale(1.2);
+  text-shadow: 0 0 5px gold;
+}
+.rating-stars-edit span.selected {
+  color: gold;
+  text-shadow: 0 0 5px gold;
+}

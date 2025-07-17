@@ -1,0 +1,41 @@
+/* ===================================================
+   🌐 GLOBAL STYLES & RESETS
+   =================================================== */
+
+/* Reset all elements to consistent baseline */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(98, 0, 234, 0.5) transparent;
+}
+
+/* Custom scrollbar for Webkit browsers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(98, 0, 234, 0.5);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(98, 0, 234, 0.8);
+}
+
+/* Body theming with light/dark mode support */
+body {
+  background: #f9f9f9;
+  color: #333;
+  transition: background 0.3s, color 0.3s;
+  padding-bottom: 0px;
+}
+body.dark {
+  background: #121212;
+  color: #f1f1f1;
+}

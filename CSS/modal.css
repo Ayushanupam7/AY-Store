@@ -1,0 +1,63 @@
+/* ===================================================
+   💬 REVIEW MODAL
+   =================================================== */
+
+/* Modal overlay */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+.modal-content h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+.modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  min-height: 80px;
+  resize: vertical;
+}
+.modal-content button {
+  margin-top: 1rem;
+  background: #6200ea;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.modal-content button.close {
+  background: #aaa;
+  margin-left: 10px;
+}
+
+/* Comment list styling */
+#commentList {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+#commentList p {
+  padding: 6px 10px;
+  background: #f1f1f1;
+  margin: 6px 0;
+  border-radius: 6px;
+}

@@ -1,0 +1,16 @@
+  <link rel="stylesheet" href="CSS/reset.css">
+  <link rel="stylesheet" href="CSS/header.css">
+  <link rel="stylesheet" href="CSS/search.css">
+  <link rel="stylesheet" href="CSS/theme.css">
+  <link rel="stylesheet" href="CSS/animations.css">
+  <link rel="stylesheet" href="CSS/banner.css">
+  <link rel="stylesheet" href="CSS/app-grid.css">
+  <link rel="stylesheet" href="CSS/trending.css">
+  <link rel="stylesheet" href="CSS/screenshots.css">
+  <link rel="stylesheet" href="CSS/app-details.css">
+  <link rel="stylesheet" href="CSS/ratings.css">
+  <link rel="stylesheet" href="CSS/modal.css">
+  <link rel="stylesheet" href="CSS/categories.css">
+  <link rel="stylesheet" href="CSS/footer.css">
+  <link rel="stylesheet" href="CSS/utilities.css">
+  

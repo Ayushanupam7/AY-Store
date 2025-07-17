@@ -1,0 +1,112 @@
+/* ===================================================
+   🎨 ANIMATIONS AND EFFECTS
+   =================================================== */
+
+/* Gradient text animation for logo */
+.logo-text {
+  font-size: 2rem;
+  font-weight: bold;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.logo-text .animated-ay {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedTextColor 5s ease infinite;
+}
+.animated-store {
+  background: linear-gradient(90deg, #ff6ec4, #7873f5, #4facfe, #00f2fe);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: animatedTextColor 5s ease infinite;
+}
+@keyframes animatedTextColor {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Typing animation for subtitle */
+.subtitle.typing {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffffff;
+  font-size: 1rem;
+  position: relative;
+  width: 0;
+  border-right: 1px solid #171bd3;
+  animation: 
+    typing 3s steps(25, end) forwards,
+    blink-cursor 0.7s step-end infinite 3s,
+    reset-typing 3s 60s forwards,
+    final-state 0s 63s forwards;
+}
+@keyframes typing {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+@keyframes blink-cursor {
+  0%, 100% { border-color: #171bd3; }
+  50% { border-color: transparent; }
+}
+@keyframes reset-typing {
+  0% { width: 100%; border-right: 1px solid #171bd3; }
+  99% { width: 0; border-right: 1px solid #171bd3; }
+  100% { width: 0; border-right: none; }
+}
+@keyframes final-state {
+  to { width: 100%; border-right: none; animation: none; }
+}
+
+/* Tooltip animation */
+@keyframes hideTooltip {
+  0%, 80% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+/* Glowing border effect */
+@keyframes glowBorder {
+  0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); }
+  40% { box-shadow: 0 0 5px rgba(0, 255, 55, 0.671); }
+  70% { box-shadow: 0 0 15px rgba(0, 242, 254, 0.6); }
+  100% { box-shadow: 0 0 5px rgba(243, 158, 1, 0.822); }
+}
+
+/* Pulsing star animation */
+@keyframes pulseStar {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Footer animations */
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* Gradient Animation */
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

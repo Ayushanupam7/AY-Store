@@ -1,8 +1,8 @@
 /* ===================================================
-   🌐 GLOBAL STYLES
-=================================================== */
+   🌐 GLOBAL STYLES & RESETS
+   =================================================== */
 
-/* Global Reset and Scrollbar Styles */
+/* Reset all elements to consistent baseline */
 * {
   margin: 0;
   padding: 0;
@@ -12,7 +12,7 @@
   scrollbar-color: rgba(98, 0, 234, 0.5) transparent;
 }
 
-/* Webkit Scrollbar Customization */
+/* Custom scrollbar for Webkit browsers */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -28,7 +28,7 @@
   background: rgba(98, 0, 234, 0.8);
 }
 
-/* Body Theme Styles */
+/* Body theming with light/dark mode support */
 body {
   background: #f9f9f9;
   color: #333;
@@ -42,9 +42,9 @@ body.dark {
 
 /* ===================================================
    🏗️ LAYOUT COMPONENTS
-=================================================== */
+   =================================================== */
 
-/* Header and Navigation */
+/* Fixed header with gradient background */
 .custom-header {
   position: fixed;
   top: 0;
@@ -62,7 +62,7 @@ body.dark {
   flex-wrap: wrap;
 }
 
-/* Logo and Title Group */
+/* Logo and title grouping */
 .logo-title {
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@ body.dark {
   font-weight: 300;
 }
 
-/* Header Actions (Search, Theme Toggle) */
+/* Header action buttons container */
 .actions {
   display: flex;
   gap: 0.5rem;
@@ -102,7 +102,11 @@ body.dark {
   outline: 2px solid #03dac5;
 }
 
-/* Search Suggestions */
+/* ===================================================
+   🔍 SEARCH COMPONENTS
+   =================================================== */
+
+/* Search suggestion dropdown */
 .suggestion-box {
   position: absolute;
   background-color: #fff;
@@ -136,7 +140,11 @@ body.dark {
   border-radius: 4px;
 }
 
-/* Theme Mode Toggle */
+/* ===================================================
+   🌗 THEME TOGGLE COMPONENT
+   =================================================== */
+
+/* Theme toggle button with tooltip */
 .thememode {
   position: relative;
   cursor: pointer;
@@ -173,9 +181,9 @@ body.dark {
 
 /* ===================================================
    🎨 ANIMATIONS AND EFFECTS
-=================================================== */
+   =================================================== */
 
-/* Logo Text Animation */
+/* Gradient text animation for logo */
 .logo-text {
   font-size: 2rem;
   font-weight: bold;
@@ -203,7 +211,7 @@ body.dark {
   100% { background-position: 0% 50%; }
 }
 
-/* Typing Animation */
+/* Typing animation for subtitle */
 .subtitle.typing {
   display: inline-block;
   overflow: hidden;
@@ -236,13 +244,13 @@ body.dark {
   to { width: 100%; border-right: none; animation: none; }
 }
 
-/* Tooltip Animation */
+/* Tooltip animation */
 @keyframes hideTooltip {
   0%, 80% { opacity: 1; visibility: visible; }
   100% { opacity: 0; visibility: hidden; }
 }
 
-/* Glow Border Animation */
+/* Glowing border effect */
 @keyframes glowBorder {
   0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.4); }
   40% { box-shadow: 0 0 5px rgba(0, 255, 55, 0.671); }
@@ -250,14 +258,14 @@ body.dark {
   100% { box-shadow: 0 0 5px rgba(243, 158, 1, 0.822); }
 }
 
-/* Star Rating Animation */
+/* Pulsing star animation */
 @keyframes pulseStar {
   0% { transform: scale(1); }
   50% { transform: scale(1.15); }
   100% { transform: scale(1); }
 }
 
-/* Footer Animations */
+/* Footer animations */
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
@@ -271,10 +279,11 @@ body.dark {
   50% { opacity: 1; }
 }
 
-/* ===================================================
-   🖼️ BANNER SECTION
-=================================================== */
+/* ===============================
+   🖼️ BANNER STYLES
+   =============================== */
 
+/* Container */
 .banner-slider {
   width: 100%;
   overflow: hidden;
@@ -284,42 +293,60 @@ body.dark {
   border-radius: 0 0 20px 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.527);
 }
+
+/* Banner Area */
 .banner-container {
-  margin-top: 88px;
+  margin-top: 90px;
   width: 100%;
-  height: 260px;
+  height: 240px;
   position: relative;
 }
+
+/* Banner Image */
 .banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
+  display: none;
   border-radius: 0 0 15px 15px;
   transition: filter 0.4s ease, border-radius 0.4s ease;
 }
-.banner-img.banner-1 { filter: saturate(1.2); }
-.banner-img.banner-2 { filter: brightness(0.9) contrast(1.2); }
-.banner-img.banner-3 { filter: grayscale(0.1) sepia(0.2); }
 
+/* Banner Video */
+.banner-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  border-radius: 0 0 15px 15px;
+}
+
+/* Banner Text Overlay */
 .banner-text {
   position: absolute;
   bottom: 10px;
   left: 0px;
   padding: 1rem 1.5rem;
   color: #ffffff;
-  text-shadow: -1px -1px 0 black, 1px -1px 0 red, -1px 1px 0 black, 1px 1px 0 black;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 red,
+    -1px  1px 0 black,
+     1px  1px 0 black;
   max-width: 70%;
   z-index: 10;
 }
+
 .banner-text h2 {
   font-size: 1.4rem;
   margin-bottom: 6px;
 }
+
 .banner-text p {
   font-size: 0.95rem;
   margin-bottom: 8px;
 }
+
 .banner-text a {
   background: #000;
   color: black;
@@ -328,12 +355,13 @@ body.dark {
   text-decoration: none;
   font-weight: 500;
 }
+
 .banner-text a:hover {
   background: #00b8a9;
   color: white;
 }
 
-/* Banner Navigation Dots */
+/* Navigation Dots */
 .dots {
   display: flex;
   justify-content: center;
@@ -341,6 +369,7 @@ body.dark {
   margin-top: 10px;
   padding-bottom: 10px;
 }
+
 .dots span {
   width: 10px;
   height: 10px;
@@ -349,19 +378,50 @@ body.dark {
   cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
 }
+
 .dots span.active {
   background: #6200ea;
   transform: scale(1.2);
 }
+
 .dots span:hover {
   background: #3700b3;
 }
 
+/* Tablet */
+@media (max-width: 768px) {
+  .banner-container {
+    height: 200px;
+  }
+
+  .banner-text {
+    font-size: 0.9rem;
+    bottom: 15px;
+    left: 20px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .banner-container {
+    height: 180px;
+    margin-top: 20px;
+  }
+
+  .banner-text,
+  .banner-text h2,
+  .banner-text p,
+  .banner-text a {
+    display: none;
+  }
+}
+
+
 /* ===================================================
    📦 APP CARDS AND GRID
-=================================================== */
+   =================================================== */
 
-/* Main App Grid Layout */
+/* Main app grid layout */
 .app-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
@@ -398,7 +458,7 @@ body.dark {
   transform: scale(1.1);
 }
 
-/* Star Badge */
+/* Featured app badge */
 .star-badge {
   position: absolute;
   top: 10px;
@@ -416,7 +476,7 @@ body.dark {
 
 /* ===================================================
    🔥 TRENDING SECTION
-=================================================== */
+   =================================================== */
 
 .trending-section {
   padding: 2rem 1rem;
@@ -429,6 +489,7 @@ body.dark {
   color: #333;
 }
 
+/* Horizontal scrolling container */
 .trending-wrapper {
   overflow-x: auto;
   overflow-y: hidden;
@@ -448,6 +509,7 @@ body.dark {
   border-radius: 10px;
 }
 
+/* Trending card grid */
 .trending-grid {
   display: flex;
   gap: 20px;
@@ -486,6 +548,7 @@ body.dark {
   margin: 0;
 }
 
+/* Ranking badge */
 .trending-rank {
   font-weight: bold;
   background: #fd4040;
@@ -499,8 +562,9 @@ body.dark {
 
 /* ===================================================
    🖼️ APP SCREENSHOTS SECTION
-=================================================== */
+   =================================================== */
 
+/* Horizontal screenshot scroller */
 .app-screenshots {
   display: flex;
   gap: 1.5rem;
@@ -530,6 +594,7 @@ body.dark {
   transform: scale(1.02);
 }
 
+/* Empty state for screenshots */
 .no-screenshots {
   color: #666;
   font-style: italic;
@@ -538,7 +603,7 @@ body.dark {
   width: 100%;
 }
 
-/* Screenshot Navigation Dots */
+/* Screenshot navigation dots */
 .screenshot-nav-dots {
   display: flex;
   justify-content: center;
@@ -560,8 +625,9 @@ body.dark {
 
 /* ===================================================
    📱 APP DETAILS VIEW
-=================================================== */
+   =================================================== */
 
+/* Main app details container */
 .app-details-content {
   background: white;
   border-radius: 15px;
@@ -575,7 +641,7 @@ body.dark {
   margin: 0 auto;
 }
 
-/* Details Header */
+/* App details header */
 .details-header {
   background: linear-gradient(90deg, #000000f8, #7340fd);
   color: white;
@@ -600,7 +666,7 @@ body.dark {
   flex: 1;
 }
 
-/* App Meta Information */
+/* App metadata tags */
 .app-meta {
   display: flex;
   flex-wrap: wrap;
@@ -615,7 +681,7 @@ body.dark {
   border-radius: 20px;
 }
 
-/* Detail Sections */
+/* Section styling */
 .detail-section {
   margin: 1.5rem 0;
 }
@@ -624,7 +690,7 @@ body.dark {
   color: #6200ea;
 }
 
-/* Back Button */
+/* Back navigation button */
 .back-button {
   background: rgba(255,255,255,0.2);
   color: white;
@@ -640,9 +706,9 @@ body.dark {
 
 /* ===================================================
    ⭐ RATING COMPONENTS
-=================================================== */
+   =================================================== */
 
-/* Static Rating Stars */
+/* Static rating display */
 .rating-stars {
   display: flex;
   gap: 6px;
@@ -666,7 +732,7 @@ body.dark {
   animation: pulseStar 1s infinite ease-in-out;
 }
 
-/* Editable Rating Stars */
+/* Editable rating input */
 .rating-stars-edit {
   display: flex;
   gap: 6px;
@@ -692,8 +758,9 @@ body.dark {
 
 /* ===================================================
    💬 REVIEW MODAL
-=================================================== */
+   =================================================== */
 
+/* Modal overlay */
 .modal {
   position: fixed;
   top: 0; left: 0;
@@ -740,7 +807,7 @@ body.dark {
   margin-left: 10px;
 }
 
-/* Comment List */
+/* Comment list styling */
 #commentList {
   max-height: 150px;
   overflow-y: auto;
@@ -755,8 +822,9 @@ body.dark {
 
 /* ===================================================
    📱 APP DETAILS FOOTER (FIXED)
-=================================================== */
+   =================================================== */
 
+/* Fixed action footer for app details */
 .app-details-footer {
   position: fixed;
   bottom: 0;
@@ -790,8 +858,9 @@ body.dark {
 
 /* ===================================================
    🧭 CATEGORIES SECTION
-=================================================== */
+   =================================================== */
 
+/* Category filter buttons */
 .category, .category1 {
   margin: 1rem auto;
   text-align: center;
@@ -817,8 +886,9 @@ body.dark {
 
 /* ===================================================
    🦶 MAIN FOOTER
-=================================================== */
+   =================================================== */
 
+/* Main footer styling */
 footer {
   background: linear-gradient(90deg, #000000f8, #7340fd);
   color: #fff;
@@ -836,7 +906,7 @@ footer {
   padding: 0 0.5rem;
 }
 
-/* Brand Info */
+/* Brand information section */
 .brand-info .logo-title {
   display: flex;
   align-items: center;
@@ -861,7 +931,7 @@ footer {
   margin-bottom: 1rem;
 }
 
-/* App Badges */
+/* App store badges */
 .app-badges.mobile-only {
   display: flex;
   gap: 0.5rem;
@@ -872,7 +942,7 @@ footer {
   border-radius: 5px;
 }
 
-/* Contact Info */
+/* Contact information */
 .contact-info h4,
 .social-contact h5 {
   color: #fff;
@@ -892,7 +962,7 @@ footer {
   text-align: center;
 }
 
-/* Social Icons */
+/* Social media icons */
 .social-icons {
   display: flex;
   gap: 1rem;
@@ -914,7 +984,7 @@ footer {
   background: #6200ea;
 }
 
-/* Footer Bottom */
+/* Footer bottom section */
 .footer-bottom {
   background: rgba(0,0,0,0.2);
   padding: 1.5rem 0;
@@ -949,9 +1019,9 @@ footer {
 
 /* ===================================================
    🛠️ UTILITY CLASSES
-=================================================== */
+   =================================================== */
 
-/* Buttons */
+/* Button styling */
 .buttons button,
 .visit-btn {
   background: #6200ea;
@@ -974,25 +1044,25 @@ footer {
   background-color: #ff0000;
 }
 
-/* Links */
+/* Link styling */
 .animated-link {
   color: rgb(212, 205, 205);
   text-decoration: none;
 }
 
-/* Headings */
+/* Heading styling */
 .animated-heading {
   align-items: center;
 }
 
-/* Desktop-only Elements */
+/* Desktop-only elements */
 .desktop-only {
   display: none;
 }
 
 /* ===================================================
    🌗 DARK MODE OVERRIDES
-=================================================== */
+   =================================================== */
 
 body.dark {
   /* Dark mode body styles */
@@ -1000,6 +1070,7 @@ body.dark {
   color: #f1f1f1;
 }
 
+/* Dark mode search suggestions */
 body.dark .suggestion-box {
   background-color: #222;
   color: #fff;
@@ -1009,12 +1080,14 @@ body.dark .suggestion-box p:hover {
   background-color: #333;
 }
 
+/* Dark mode tooltip */
 body.dark .thememode::after {
   background: rgba(255, 255, 255, 0.9);
   color: #121212;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+/* Dark mode scrollbar */
 body.dark .trending-wrapper::-webkit-scrollbar-track {
   background-color: #222;
 }
@@ -1022,11 +1095,13 @@ body.dark .trending-wrapper::-webkit-scrollbar-thumb {
   background: linear-gradient(to right, #3333ff, #ff00cc);
 }
 
+/* Dark mode cards */
 body.dark .trending-card {
   background: #222;
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
 }
 
+/* Dark mode screenshots */
 body.dark .app-screenshots img {
   background: #2a2a2a;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -1036,6 +1111,7 @@ body.dark .no-screenshots {
   color: #aaa;
 }
 
+/* Dark mode navigation dots */
 body.dark .screenshot-nav-dots span {
   background: #555;
 }
@@ -1043,6 +1119,7 @@ body.dark .screenshot-nav-dots span.active {
   background: #bb86fc;
 }
 
+/* Dark mode footer */
 body.dark .app-details-footer {
   background: #1e1e1e;
   border-color: #333;
@@ -1110,10 +1187,11 @@ body.dark footer {
 body.dark .social-icons a:hover {
   background: #bb86fc;
 }
+
 /* ===================================================
    📱 MOBILE BOTTOM NAVIGATION BAR
-=================================================== */
-
+   =================================================== */
+/* Mobile navigation bar */
 .mobile-bottom-nav {
   position: fixed;
   bottom: 0;
@@ -1129,6 +1207,7 @@ body.dark .social-icons a:hover {
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Navigation item styling */
 .mobile-nav-item {
   display: flex;
   flex-direction: column;
@@ -1155,7 +1234,7 @@ body.dark .social-icons a:hover {
   color: #6200ea;
 }
 
-/* Dark mode styles */
+/* Dark mode mobile nav */
 body.dark .mobile-bottom-nav {
   background: #1e1e1e;
   border-color: #333;
@@ -1190,9 +1269,10 @@ body.dark .mobile-nav-item:hover {
     padding-bottom: 60px;
   }
 }
+
 /* ===================================================
    📱 RESPONSIVE LAYOUTS
-=================================================== */
+   =================================================== */
 
 @media (min-width: 768px) {
   /* Desktop Styles */
@@ -1227,8 +1307,6 @@ body.dark .mobile-nav-item:hover {
 
 @media (max-width: 768px) {
   /* Tablet Styles */
-  .banner-container { height: 200px; }
-  .banner-text { font-size: 0.9rem; bottom: 15px; left: 20px; }
   .app-icon { width: 60px; height: 60px; }
   .app-meta { justify-content: left; }
   
@@ -1274,8 +1352,6 @@ body.dark .mobile-nav-item:hover {
 
 @media (max-width: 480px) {
   /* Mobile Styles */
-  .banner-container { height: 180px; margin-top: 20px; }
-  .banner-text, .banner-text h2, .banner-text p, .banner-text a { display: none; }
   .buttons button { flex: 1; width: 100%; }
   .footer-container { flex-direction: column; text-align: center; }
   .app-details-footer { flex-direction: column; }
@@ -1295,7 +1371,10 @@ body.dark .mobile-nav-item:hover {
   }
 }
 
-/* Loader Overlay */
+/* ===================================================
+   🔄 LOADER OVERLAY
+   =================================================== */
+
 #pageLoader {
   position: fixed;
   top: 0;
@@ -1311,11 +1390,6 @@ body.dark .mobile-nav-item:hover {
 
 /* Dark mode background */
 #pageLoader.dark {
-  background: rgba(18, 18, 18, 0.95);
-}
-
-/* Dark Mode */
-body.dark #pageLoader {
   background: rgba(18, 18, 18, 0.95);
 }
 
@@ -1342,4 +1416,4 @@ body.dark #pageLoader {
   100% {
     background-position: 0% 50%;
   }
-}
+} 

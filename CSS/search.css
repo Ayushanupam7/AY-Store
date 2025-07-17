@@ -1,0 +1,37 @@
+/* ===================================================
+   🔍 SEARCH COMPONENTS
+   =================================================== */
+
+/* Search suggestion dropdown */
+.suggestion-box {
+  position: absolute;
+  background-color: #fff;
+  color: black;
+  border-radius: 5px;
+  max-height: 220px;
+  margin-top: 5px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  display: none;
+  font-weight: 400;
+}
+.suggestion-box p {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  margin: 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.suggestion-box p:hover {
+  background-color: #f0f0f0;
+}
+.suggestion-icon {
+  width: 25px;
+  height: 25px;
+  margin-right: 10px;
+  border-radius: 4px;
+}

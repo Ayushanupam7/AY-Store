@@ -1,0 +1,42 @@
+/* ===================================================
+   🛠️ UTILITY CLASSES
+   =================================================== */
+
+/* Button styling */
+.buttons button,
+.visit-btn {
+  background: #6200ea;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  font: inherit;
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px;
+}
+.buttons button:hover {
+  background: #019114;
+}
+.visit-btn:hover {
+  background-color: #ff0000;
+}
+
+/* Link styling */
+.animated-link {
+  color: rgb(212, 205, 205);
+  text-decoration: none;
+}
+
+/* Heading styling */
+.animated-heading {
+  align-items: center;
+}
+
+/* Desktop-only elements */
+.desktop-only {
+  display: none;
+}
