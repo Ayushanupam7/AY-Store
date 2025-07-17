@@ -1,7 +1,6 @@
 function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark");
-  document.documentElement.classList.toggle("dark", isDark); // Apply to :root for CSS variables
-
+  document.documentElement.classList.toggle("dark", isDark);
   localStorage.setItem("darkMode", isDark);
 
   const toggleBtn = document.getElementById("darkModeToggle");
@@ -10,7 +9,7 @@ function toggleDarkMode() {
   }
 }
 
-// Apply dark mode on page load based on localStorage
+// Apply dark mode on load
 document.addEventListener("DOMContentLoaded", () => {
   const isDarkStored = localStorage.getItem("darkMode") === "true";
   if (isDarkStored) {
@@ -27,25 +26,37 @@ document.addEventListener("DOMContentLoaded", () => {
 // ✅ Keyboard shortcut: Ctrl + D
 document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key.toLowerCase() === "d") {
-    e.preventDefault(); // prevent bookmark shortcut in browsers
+    e.preventDefault();
     toggleDarkMode();
   }
 });
 
-// ✅ Mobile Gesture: Quick Vertical Swipe Down (like V)
-let touchStartY = 0;
-let touchEndY = 0;
+// ✅ Mobile Z Gesture Detection
+let touchPoints = [];
 
 document.addEventListener("touchstart", (e) => {
-  touchStartY = e.touches[0].clientY;
+  touchPoints = [{ x: e.touches[0].clientX, y: e.touches[0].clientY }];
 });
 
-document.addEventListener("touchend", (e) => {
-  touchEndY = e.changedTouches[0].clientY;
-  const swipeDistance = touchEndY - touchStartY;
+document.addEventListener("touchmove", (e) => {
+  const point = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  touchPoints.push(point);
+});
 
-  // Detect quick downward swipe (greater than 100px)
-  if (swipeDistance > 100) {
+document.addEventListener("touchend", () => {
+  if (touchPoints.length < 3) return;
+
+  const [start, middle, end] = [
+    touchPoints[0],
+    touchPoints[Math.floor(touchPoints.length / 2)],
+    touchPoints[touchPoints.length - 1]
+  ];
+
+  const isRight1 = middle.x > start.x && Math.abs(middle.y - start.y) < 50;
+  const isDiag = middle.x > end.x && end.y > middle.y;
+  const isRight2 = end.x > start.x && Math.abs(end.y - middle.y) < 50;
+
+  if (isRight1 && isDiag && isRight2) {
     toggleDarkMode();
   }
 });
