@@ -356,7 +356,7 @@ const banners = [
     // description: "Explore my work and skills"
   },{
     videoDesktop: "uploads/banners/banner1.mp4",
-    
+    // videoMobile: "uploads/banners/banner1.mp4",
     link: "https://ayushanupamportfolio.netlify.app/",
     // text: "My Portfolio",
     // description: "Explore my work and skills"
