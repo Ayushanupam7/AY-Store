@@ -355,19 +355,12 @@ const banners = [
     // text: "My Portfolio",
     // description: "Explore my work and skills"
   },{
-    videoDesktop: "uploads/banners/banner1.mp4",
-    // videoMobile: "uploads/banners/banner1.mp4",
+    imageDesktop: "uploads/banners/scanner.jpg",
+    imageMobile: "uploads/banners/banner2.jpg",
     link: "https://ayushanupamportfolio.netlify.app/",
     // text: "My Portfolio",
     // description: "Explore my work and skills"
   },
-  {
-    imageDesktop: "uploads/banners/scanner.jpg",
-    imageMobile: "uploads/banners/banner2M.jpg",
-    link: "#trendingGrid",
-    // text: "Trending Now",
-    // description: "Check the latest updates"
-  }
 ];
 
 let currentBanner = 0;
