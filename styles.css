@@ -1021,7 +1021,9 @@ footer {
 .legal-links a:hover {
   color: #fff;
 }
-
+.animated-icon{
+  text-decoration: none;
+}
 /* ===================================================
    🛠️ UTILITY CLASSES
    =================================================== */
@@ -1190,7 +1192,7 @@ body.dark footer {
   background: linear-gradient(135deg, #121212, #1a1a2e);
 }
 body.dark .social-icons a:hover {
-  background: #bb86fc;
+  background: #7300ff;
 }
 
 /* ===================================================
