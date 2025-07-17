@@ -47,7 +47,7 @@ document.addEventListener("touchend", (e) => {
   const duration = Date.now() - touchStartTime;
 
   // Must swipe down more than 100px AND hold for 2 seconds (2000ms)
-  if (swipeDistance > 100 && duration >= 2000) {
+  if (swipeDistance > 100 && duration >= 1000) {
     toggleDarkMode();
   }
 });
