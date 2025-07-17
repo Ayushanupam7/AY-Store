@@ -559,6 +559,11 @@ body.dark {
   top: 10px;
   left: 10px;
 }
+body.dark .trending-rank{
+  background: #ffe600;
+  color: black;
+  font-weight: bold;
+}
 
 /* ===================================================
    🖼️ APP SCREENSHOTS SECTION
